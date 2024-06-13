@@ -46,10 +46,3 @@ def process_alkane_ri_file(file_path):
     df = df.rename(columns=columns_to_keep)
     save_dataframe_as_tsv(df, file_path)
 
-# File paths
-metadata_file_path = 'metadata file path'
-alkane_file_path = 'alkane file path'
-
-# Process files
-process_metadata_file(metadata_file_path)
-process_alkane_ri_file(alkane_file_path)
