@@ -1,9 +1,14 @@
+from pathlib import Path
+from typing import Final
 import pandas as pd
 import os
+import pytest
 from rcx_tk.process_metadata_file import read_file
 
+__location__: Final[Path] = Path(__file__).parent.resolve()
 
-def test_read_file():
+@pytest.fixture 
+def dataframe():
     d = {
         'File path': [
             "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\1_instrumental blank_01.raw",
@@ -83,7 +88,7 @@ def test_read_file():
             19,
             29
       ],
-      "Inject. volume (µL)": [
+      "Inject. volume (uL)": [
             6,
             6,
             6,
@@ -111,8 +116,12 @@ def test_read_file():
        ]
     }
 
-    expected = pd.DataFrame(data = d)
-    file_path = os.path.join("tests", "test_data", "batch_specification1.xlsx")
-    actual = read_file(file_path)
-    #assert expected == actual
-    assert actual.equals(expected)
+    return pd.DataFrame(data = d)
+
+@pytest.mark.parametrize("file_name",
+                         ["batch_specification1.csv", "batch_specification1.xlsx", "batch_specification1.txt"])
+def test_read_file(file_name, dataframe):
+    file_path = __location__.joinpath("test_data", file_name)
+    actual = read_file(str(file_path))
+    assert actual.equals(dataframe)
+    
