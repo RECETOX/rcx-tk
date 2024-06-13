@@ -2,6 +2,9 @@
 
 
 # FIXME: put actual code here
+import datetime
+
+
 def hello(name):
     """Say hello.
 
@@ -26,4 +29,8 @@ def hello(name):
     """
     if name == 'nobody':
         raise ValueError('Can not say hello to nobody')
-    return f'Hello {name}!'
+    return f'{get_todays_date()}: Hello {name}!'
+
+def get_todays_date():
+    today = datetime.datetime.date(datetime.datetime.now()).strftime("%d.%m.%Y")
+    return today
