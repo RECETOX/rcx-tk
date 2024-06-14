@@ -15,11 +15,12 @@ def read_file(file_path):
 
 def save_dataframe_as_tsv(df, file_path):
     """Saves a DataFrame as a TSV file."""
-    output_file = f'processed_{os.path.splitext(os.path.basename(file_path))[0]}.tsv'
-    df.to_csv(output_file, sep='\t', index=False)
-    print(f"Processed file saved as: {output_file}")
+    if os.path.splitext(file_path)[1] != ".tsv":
+        raise ValueError("Unsupported file format. Please point to a TSV file.")
+    df.to_csv(file_path, sep='\t', index=False)
+    
 
-def process_metadata_file(file_path):
+def process_metadata_file(file_path, out_path):
     """Processes a metadata file, keeping and renaming specific columns."""
     columns_to_keep = {
         'File name': 'sampleName',
@@ -32,7 +33,7 @@ def process_metadata_file(file_path):
     df = read_file(file_path)
     df = df[list(columns_to_keep.keys())].rename(columns=columns_to_keep)
     df['sampleName'] = df['sampleName'].str.replace(' ', '_')
-    save_dataframe_as_tsv(df, file_path)
+    save_dataframe_as_tsv(df, out_path)
 
 def process_alkane_ri_file(file_path):
     """Processes an Alkane RI file, keeping and renaming specific columns."""
