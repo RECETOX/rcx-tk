@@ -3,7 +3,7 @@ from typing import Final
 import pandas as pd
 import os
 import pytest
-from rcx_tk.process_metadata_file import read_file, save_dataframe_as_tsv, process_metadata_file
+from rcx_tk.process_metadata_file import read_file, save_dataframe_as_tsv, process_metadata_file, process_alkane_ri_file
 
 __location__: Final[Path] = Path(__file__).parent.resolve()
 
@@ -288,6 +288,18 @@ def processed_dataframe():
 
     return pd.DataFrame(data = d)
 
+@pytest.fixture
+def alkanes():
+    d = {
+        "carbon_number": [
+            12, 13, 14, 15, 16, 17, 18, 19, 20
+        ],
+        "rt": [
+            2.8, 3.0, 3.3, 3.7, 4.2, 4.6, 5.0, 5.4, 5.7
+        ]
+    }
+
+    return pd.DataFrame(data = d)
 
 @pytest.mark.parametrize("file_name",
                          ["batch_specification1.csv", "batch_specification1.xlsx", "batch_specification1.txt"])
@@ -322,3 +334,11 @@ def test_process_metadata_file(processed_dataframe, tmp_path):
     process_metadata_file(file_path, out_path) 
     actual = pd.read_csv(out_path, sep='\t')
     assert actual.equals(processed_dataframe)
+
+def test_process_alkane_ri_file(alkanes, tmp_path):
+    #expected = alkanes
+    file_path = os.path.join("tests", "test_data", "Alkane_RI_ATHLETE_1.txt")
+    out_path = os.path.join(tmp_path, "processed_Alkane_RI_ATHLETE_1.tsv")
+    process_alkane_ri_file(file_path, out_path) 
+    actual = pd.read_csv(out_path, sep ='\t')
+    assert actual.equals(alkanes)
