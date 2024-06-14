@@ -5,7 +5,7 @@ def read_file(file_path):
     """Reads a file and returns a DataFrame based on the file extension."""
     file_extension = os.path.splitext(file_path)[1].lower()
     if file_extension == '.csv':
-        return pd.read_csv(file_path)
+        return pd.read_csv(file_path, encoding='UTF-8')
     elif file_extension in ['.xls', '.xlsx']:
         return pd.read_excel(file_path)
     elif file_extension == '.txt':
