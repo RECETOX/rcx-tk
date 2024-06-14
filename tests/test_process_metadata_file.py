@@ -315,8 +315,6 @@ def test_read_file_error(dataframe):
         read_file(file_path)
 
 def test_save_dataframe_as_tsv(dataframe, tmp_path):
-    # Does the written tsv have the same structure as the original dataframe?
-    # Is there any tsv in the directory?
     out_path = os.path.join(tmp_path, "batch_specification1.tsv")
     save_dataframe_as_tsv(dataframe, out_path)
     actual = pd.read_csv(out_path, sep='\t')
@@ -328,7 +326,6 @@ def test_read_save_dataframe_as_tsv_error(dataframe, tmp_path):
         save_dataframe_as_tsv(dataframe, out_path)
 
 def test_process_metadata_file(processed_dataframe, tmp_path):
-    # expected  = processed_dataframe
     file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
     out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
     process_metadata_file(file_path, out_path) 
@@ -336,7 +333,6 @@ def test_process_metadata_file(processed_dataframe, tmp_path):
     assert actual.equals(processed_dataframe)
 
 def test_process_alkane_ri_file(alkanes, tmp_path):
-    #expected = alkanes
     file_path = os.path.join("tests", "test_data", "Alkane_RI_ATHLETE_1.txt")
     out_path = os.path.join(tmp_path, "processed_Alkane_RI_ATHLETE_1.tsv")
     process_alkane_ri_file(file_path, out_path) 
