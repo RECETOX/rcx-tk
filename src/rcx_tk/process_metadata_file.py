@@ -35,7 +35,7 @@ def process_metadata_file(file_path, out_path):
     df['sampleName'] = df['sampleName'].str.replace(' ', '_')
     save_dataframe_as_tsv(df, out_path)
 
-def process_alkane_ri_file(file_path):
+def process_alkane_ri_file(file_path, out_path):
     """Processes an Alkane RI file, keeping and renaming specific columns."""
     columns_to_keep = {
         'Carbon number': 'carbon_number',
@@ -45,5 +45,5 @@ def process_alkane_ri_file(file_path):
     df = read_file(file_path)
     df.columns = df.columns.str.strip()
     df = df.rename(columns=columns_to_keep)
-    save_dataframe_as_tsv(df, file_path)
+    save_dataframe_as_tsv(df, out_path)
 
