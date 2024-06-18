@@ -1,178 +1,29 @@
-# see documentation, e.g.
-# - https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata
-# - https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
-# - https://www.python.org/dev/peps/pep-0621/
+[tool.poetry]
+name = "rcx-tk"
+version = "0.1.0"
+description = "This package adjusts and cleans the metadata file provided by a user."
+authors = ["Your Name <you@example.com>"]
+license = "GPL-2"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+build = "^1.2.1"
+bump-my-version = "^0.23.0"
+coverage = "^7.5.3"
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
+ruff = "^0.4.9"
+Sphinx = "^7.3.7"
+sphinx-rtd-theme = "^2.0.0"
+sphinx-autoapi = "^3.1.1"
+tox = "^4.15.1"
+myst-parser = "^3.0.1"
+twine = "^5.1.0"
+wheel = "^0.43.0"
 
 [build-system]
-requires = ["setuptools>=64.0.0", "setuptools-scm", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project]
-authors = [
-    { name = "Zargham Ahmad", email = "zargham.ahmad@recetox.muni.cz" }
-]
-classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Natural Language :: English",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-]
-dependencies = []
-description = "Tools for internal use"
-keywords = [
-    "rcx",
-    "process metadata",
-]
-license = {file = "LICENSE"}
-name = "rcx_tk"
-readme = {file = "README.md", content-type = "text/markdown"}
-requires-python = ">=3.8"
-version = "0.1.0"
-
-[project.optional-dependencies]
-dev = [
-    "build",  # build is not only used in publishing (below), but also in the template's test suite
-    "bump-my-version",
-    "coverage [toml]",
-    "pytest",
-    "pytest-cov",
-    "ruff",
-    "sphinx",
-    "sphinx_rtd_theme",
-    "sphinx-autoapi",
-    "tox",
-    "myst_parser",
-]
-publishing = [
-    "build",
-    "twine",
-    "wheel",
-]
-
-[project.urls]
-Repository = "https://github.com/RECETOX/rcx-tk"
-Issues = "https://github.com/RECETOX/rcx-tk/issues"
-Changelog = "https://github.com/RECETOX/rcx-tk/CHANGELOG.md"
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-
-[tool.coverage.run]
-branch = true
-source = ["src/rcx_tk"]
-command_line = "-m pytest"
-
-[tool.isort]
-lines_after_imports = 2
-force_single_line = 1
-no_lines_before = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
-known_first_party = "rcx_tk"
-src_paths = ["src/rcx_tk", "tests"]
-line_length = 120
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = py38,py39,py310,py311,py312
-skip_missing_interpreters = true
-[testenv]
-commands = pytest
-extras = dev
-"""
-
-[tool.ruff]
-# Enable Pyflakes `E` and `F` codes by default.
-select = [
-    "F",  # Pyflakes
-    "E",  # pycodestyle (error)
-    "W",    # pycodestyle (warning)
-    # "C90",  # mccabe
-    "I",    # isort
-    "D",    # pydocstyle
-    # "PL",   # Pylint
-    # "PLC",  # Convention
-    # "PLE",  # Error
-    # "PLR",  # Refactor
-    # "PLW",  # Warning
-
-]
-ignore = [
-    'D100',  # Missing module docstring
-    'D104',  # Missing public package docstring
-    # The following list excludes rules irrelevant to the Google style
-    'D203',
-    'D204',
-    'D213',
-    'D215',
-    'D400',
-    'D401',
-    'D404',
-    'D406',
-    'D407',
-    'D408',
-    'D409',
-    'D413',
-]
-
-# Allow autofix for all enabled rules (when `--fix`) is provided.
-fixable = ["A", "B", "C", "D", "E", "F", "I"]
-unfixable = []
-
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-    ".venv",
-    "scripts",
-]
-per-file-ignores = {}
-
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-target-version = "py39"
-line-length = 120
-
-[tool.ruff.isort]
-known-first-party = ["rcx_tk"]
-force-single-line = true
-no-lines-before = ["future","standard-library","third-party","first-party","local-folder"]
-
-[tool.bumpversion]
-current_version = "0.1.0"
-
-[[tool.bumpversion.files]]
-filename = "src/rcx_tk/__init__.py"
-
-[[tool.bumpversion.files]]
-filename = "pyproject.toml"
-
-[[tool.bumpversion.files]]
-filename = "CITATION.cff"
-
-[[tool.bumpversion.files]]
-filename = "docs/conf.py"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
