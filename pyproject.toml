@@ -2,12 +2,14 @@
 name = "rcx-tk"
 version = "0.1.0"
 description = "This package adjusts and cleans the metadata file provided by a user."
-authors = ["Your Name <you@example.com>"]
-license = "GPL-2"
+authors = ["Zargham Ahmad <zargham.ahmad@recetox.muni.cz>" ]
+license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+pandas = "^2.2.2"
+pyxlsx = "^1.1.3"
 
 [tool.poetry.group.dev.dependencies]
 build = "^1.2.1"
@@ -27,3 +29,103 @@ wheel = "^0.43.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py38,py39,py310,py311,py312
+skip_missing_interpreters = true
+[testenv]
+commands = pytest
+extras = dev
+"""
+
+[tool.ruff]
+# Enable Pyflakes `E` and `F` codes by default.
+select = [
+    "F",  # Pyflakes
+    "E",  # pycodestyle (error)
+    "W",    # pycodestyle (warning)
+    # "C90",  # mccabe
+    "I",    # isort
+    "D",    # pydocstyle
+    # "PL",   # Pylint
+    # "PLC",  # Convention
+    # "PLE",  # Error
+    # "PLR",  # Refactor
+    # "PLW",  # Warning
+
+]
+ignore = [
+    'D100',  # Missing module docstring
+    'D104',  # Missing public package docstring
+    # The following list excludes rules irrelevant to the Google style
+    'D203',
+    'D204',
+    'D213',
+    'D215',
+    'D400',
+    'D401',
+    'D404',
+    'D406',
+    'D407',
+    'D408',
+    'D409',
+    'D413',
+]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "I"]
+unfixable = []
+
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    ".venv",
+    "scripts",
+]
+per-file-ignores = {}
+
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+target-version = "py39"
+line-length = 120
+
+[tool.ruff.isort]
+known-first-party = ["rcx_tk"]
+force-single-line = true
+no-lines-before = ["future","standard-library","third-party","first-party","local-folder"]
+
+[tool.bumpversion]
+current_version = "0.1.0"
+
+[[tool.bumpversion.files]]
+filename = "src/rcx_tk/__init__.py"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+
+[[tool.bumpversion.files]]
+filename = "CITATION.cff"
+
+[[tool.bumpversion.files]]
+filename = "docs/conf.py"
