@@ -2,26 +2,51 @@ import os
 import pandas as pd
 
 
-def read_file(file_path):
-    """Reads a file and returns a DataFrame based on the file extension."""
+def read_file(file_path: str) -> pd.DataFrame:
+    """Imports the metadata file to pandas dataframe. 
+
+    Args:
+        file_path (str): The path to the input data.
+
+    Raises:
+        ValueError: Error if any file format except for csv, xls, xlsx, txt or tsv is provided.
+
+    Returns:
+        pd.DataFrame: Dataframe containing the metadata.
+    """
+
     file_extension = os.path.splitext(file_path)[1].lower()
     if file_extension == '.csv':
-        return pd.read_csv(file_path)
+        return pd.read_csv(file_path, encoding='UTF-8')
     elif file_extension in ['.xls', '.xlsx']:
         return pd.read_excel(file_path)
-    elif file_extension == '.txt':
+    elif file_extension in ['.tsv', '.txt']: 
         return pd.read_csv(file_path, sep='\t')
     else:
         raise ValueError("Unsupported file format. Please provide a CSV, Excel, or TSV file.")
 
-def save_dataframe_as_tsv(df, file_path):
-    """Saves a DataFrame as a TSV file."""
-    output_file = f'processed_{os.path.splitext(os.path.basename(file_path))[0]}.tsv'
-    df.to_csv(output_file, sep='\t', index=False)
-    print(f"Processed file saved as: {output_file}")
+def save_dataframe_as_tsv(df: pd.DataFrame, file_path: str) -> None:
+    """Saves the dataframe as a TSV file.
 
-def process_metadata_file(file_path):
-    """Processes a metadata file, keeping and renaming specific columns."""
+    Args:
+        df (pd.DataFrame): The metadata dataframe.
+        file_path (str): A path where the .TSV will be exported, containing the <fileName>.TSV.
+
+    Raises:
+        ValueError: Error if provided <fileName> is of a different format than TSV.
+    """
+    if os.path.splitext(file_path)[1] != ".tsv":
+        raise ValueError("Unsupported file format. Please point to a TSV file.")
+    df.to_csv(file_path, sep='\t', index=False)
+    
+
+def process_metadata_file(file_path: str, out_path: str) -> None:
+    """Processes a metadata file, keeping and renaming specific columns.
+
+    Args:
+        file_path (str): A path to the metadata file.
+        out_path (str): A path where processed metadata dataframe is exported.
+    """
     columns_to_keep = {
         'File name': 'sampleName',
         'Type': 'sampleType',
@@ -33,10 +58,15 @@ def process_metadata_file(file_path):
     df = read_file(file_path)
     df = df[list(columns_to_keep.keys())].rename(columns=columns_to_keep)
     df['sampleName'] = df['sampleName'].str.replace(' ', '_')
-    save_dataframe_as_tsv(df, file_path)
+    save_dataframe_as_tsv(df, out_path)
 
-def process_alkane_ri_file(file_path):
-    """Processes an Alkane RI file, keeping and renaming specific columns."""
+def process_alkane_ri_file(file_path: str, out_path: str) -> None:
+    """Processes an alkane file, keeping and renaming specific columns.
+
+    Args:
+        file_path (str): A path to the alkane file.
+        out_path (str): A path where processed alkane file is exported.
+    """
     columns_to_keep = {
         'Carbon number': 'carbon_number',
         'RT (min)': 'rt'
@@ -45,12 +75,5 @@ def process_alkane_ri_file(file_path):
     df = read_file(file_path)
     df.columns = df.columns.str.strip()
     df = df.rename(columns=columns_to_keep)
-    save_dataframe_as_tsv(df, file_path)
+    save_dataframe_as_tsv(df, out_path)
 
-# File paths
-metadata_file_path = 'metadata file path'
-alkane_file_path = 'alkane file path'
-
-# Process files
-process_metadata_file(metadata_file_path)
-process_alkane_ri_file(alkane_file_path)
