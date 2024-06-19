@@ -118,7 +118,6 @@ def dataframe() -> pd.DataFrame:
 
     return pd.DataFrame(data = d)
 
-
 @pytest.fixture 
 def processed_dataframe() -> pd.DataFrame:
     d = {
@@ -234,6 +233,25 @@ def test_process_metadata_file(processed_dataframe: pd.DataFrame, tmp_path: str)
     process_metadata_file(file_path, out_path) 
     actual = pd.read_csv(out_path, sep='\t')
     assert actual.equals(processed_dataframe)
+
+@pytest.mark.parametrize("file_name",
+                         ["batch_specification1.csv", "batch_specification1.xlsx", "batch_specification1.txt"])
+def test_read_file_colnames_input(file_name: str, dataframe: pd.DataFrame):
+    file_path = __location__.joinpath("test_data", file_name)
+    #file_path = os.path.join("tests", "test_data", file_name)
+    actual_df = read_file(str(file_path))
+    actual = actual_df.columns
+    expected = dataframe.columns
+    assert expected.equals(actual)
+
+def test_process_metadata_file_colnames_output(processed_dataframe: pd.DataFrame, tmp_path: str):
+    file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
+    out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
+    process_metadata_file(file_path, out_path) 
+    expected = processed_dataframe.columns
+    actual_df = pd.read_csv(out_path, sep='\t')
+    actual = actual_df.columns
+    assert expected.equals(actual)
 
 def test_process_alkane_ri_file(alkanes: pd.DataFrame, tmp_path: str):
     file_path = os.path.join("tests", "test_data", "Alkane_RI_ATHLETE_1.txt")
