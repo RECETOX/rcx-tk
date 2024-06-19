@@ -63,6 +63,9 @@ Changelog = "https://github.com/RECETOX/rcx-tk/CHANGELOG.md"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = [
+  "src"
+]
 
 [tool.coverage.run]
 branch = true
