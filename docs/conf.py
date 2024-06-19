@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u"rcx_tk"
-copyright = u"2024, Netherlands eScience Center"
+copyright = u"2024, RECETOX, Masaryk University"
 author = u"Zargham Ahmad"
 
 # The version info for the project you're documenting, acts as replacement for
