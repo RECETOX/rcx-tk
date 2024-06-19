@@ -48,6 +48,21 @@ files = [
 dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
+name = "backports-tarfile"
+version = "1.2.0"
+description = "Backport of CPython tarfile module"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "backports.tarfile-1.2.0-py3-none-any.whl", hash = "sha256:77e284d754527b01fb1e6fa8a1afe577858ebe4e9dad8919e34c862cb399bc34"},
+    {file = "backports_tarfile-1.2.0.tar.gz", hash = "sha256:d75e02c268746e1b8144c278978b6e98e85de6ad16f8e4b0844a154557eca991"},
+]
+
+[package.extras]
+docs = ["furo", "jaraco.packaging (>=9.3)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
+testing = ["jaraco.test", "pytest (!=8.0.*)", "pytest (>=6,!=8.1.*)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)"]
+
+[[package]]
 name = "bracex"
 version = "2.4"
 description = "Bash style brace expander."
@@ -576,6 +591,9 @@ files = [
     {file = "jaraco.context-5.3.0.tar.gz", hash = "sha256:c2f67165ce1f9be20f32f650f25d8edfc1646a8aeee48ae06fb35f90763576d2"},
 ]
 
+[package.dependencies]
+"backports.tarfile" = {version = "*", markers = "python_version < \"3.12\""}
+
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
 testing = ["portend", "pytest (>=6,!=8.1.1)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy", "pytest-ruff (>=0.2.1)"]
@@ -642,6 +660,7 @@ files = [
 ]
 
 [package.dependencies]
+importlib-metadata = {version = ">=4.11.4", markers = "python_version < \"3.12\""}
 "jaraco.classes" = "*"
 "jaraco.context" = "*"
 "jaraco.functools" = "*"
@@ -975,7 +994,10 @@ files = [
 ]
 
 [package.dependencies]
-numpy = {version = ">=1.26.0", markers = "python_version >= \"3.12\""}
+numpy = [
+    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
+    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
+]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.7"
@@ -1734,7 +1756,10 @@ files = [
 ]
 
 [package.dependencies]
-astroid = {version = ">=3.0.0a1", markers = "python_version >= \"3.12\""}
+astroid = [
+    {version = ">=2.7", markers = "python_version < \"3.12\""},
+    {version = ">=3.0.0a1", markers = "python_version >= \"3.12\""},
+]
 Jinja2 = "*"
 PyYAML = "*"
 sphinx = ">=6.1.0"
@@ -2043,5 +2068,5 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.12"
-content-hash = "7c671e544db3e4d025ba7348fc3bc04412d98272ff976443b1ba4d12623e8e16"
+python-versions = "^3.11"
+content-hash = "04d71cd7491a6130c140c0fc41d695d6a1f450f83bf016a4d4bc98d40466efb3"
