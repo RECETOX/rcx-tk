@@ -19,7 +19,7 @@ def read_file(file_path: str) -> pd.DataFrame:
         return pd.read_csv(file_path, encoding='UTF-8')
     elif file_extension in ['.xls', '.xlsx']:
         return pd.read_excel(file_path)
-    elif file_extension == '.txt':
+    elif file_extension in ['.tsv', '.txt']: 
         return pd.read_csv(file_path, sep='\t')
     else:
         raise ValueError("Unsupported file format. Please provide a CSV, Excel, or TSV file.")
