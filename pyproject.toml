@@ -33,7 +33,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py38,py39,py310,py311,py312
+envlist = py311,py312
 skip_missing_interpreters = true
 [testenv]
 commands = pytest
@@ -107,16 +107,12 @@ per-file-ignores = {}
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-target-version = "py39"
 line-length = 120
 
 [tool.ruff.isort]
 known-first-party = ["rcx_tk"]
 force-single-line = true
 no-lines-before = ["future","standard-library","third-party","first-party","local-folder"]
-
-[tool.bumpversion]
-current_version = "0.1.0"
 
 [[tool.bumpversion.files]]
 filename = "src/rcx_tk/__init__.py"
