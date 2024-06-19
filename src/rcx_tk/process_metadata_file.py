@@ -1,5 +1,6 @@
-import pandas as pd
 import os
+import pandas as pd
+
 
 def read_file(file_path):
     """Reads a file and returns a DataFrame based on the file extension."""
@@ -28,7 +29,7 @@ def process_metadata_file(file_path):
         'Batch': 'batch',
         'Analytical order': 'injectionOrder'
     }
-    
+
     df = read_file(file_path)
     df = df[list(columns_to_keep.keys())].rename(columns=columns_to_keep)
     df['sampleName'] = df['sampleName'].str.replace(' ', '_')
@@ -40,7 +41,7 @@ def process_alkane_ri_file(file_path):
         'Carbon number': 'carbon_number',
         'RT (min)': 'rt'
     }
-    
+
     df = read_file(file_path)
     df.columns = df.columns.str.strip()
     df = df.rename(columns=columns_to_keep)
