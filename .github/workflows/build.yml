@@ -59,4 +59,4 @@ jobs:
           python -m pip install --upgrade pip poetry
           poetry install --with dev
       - name: Check style against standards using ruff
-        run: ruff .
+        run: poetry run ruff check .
