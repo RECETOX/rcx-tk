@@ -3,9 +3,10 @@ from typing import Final
 import pandas as pd
 import os
 import pytest
-from rcx_tk.process_metadata_file import read_file, save_dataframe_as_tsv, process_metadata_file, process_alkane_ri_file
+from rcx_tk.process_metadata_file import read_file, save_dataframe_as_tsv, process_metadata_file, process_alkane_ri_file, validate_filename
 
 __location__: Final[Path] = Path(__file__).parent.resolve()
+
 
 @pytest.fixture 
 def dataframe() -> pd.DataFrame:
@@ -190,6 +191,7 @@ def processed_dataframe() -> pd.DataFrame:
 
     return pd.DataFrame(data = d)
 
+
 @pytest.fixture
 def alkanes() -> pd.DataFrame:
     d = {
@@ -203,59 +205,75 @@ def alkanes() -> pd.DataFrame:
 
     return pd.DataFrame(data = d)
 
+
 @pytest.mark.parametrize("file_name",
                          ["batch_specification1.csv", "batch_specification1.xlsx", "batch_specification1.txt"])
 def test_read_file(file_name: str, dataframe: pd.DataFrame):
+    # arrange
     file_path = __location__.joinpath("test_data", file_name)
-    #file_path = os.path.join("tests", "test_data", file_name)
+    # act
     actual = read_file(str(file_path))
+    # assert
     assert actual.equals(dataframe)
 
-def test_read_file_error(dataframe: pd.DataFrame):
+
+def test_read_file_error():
     file_path = os.path.join("tests", "test_data", "batch_specification1.prn")
     with pytest.raises(ValueError, match = r"Unsupported file format. Please provide a CSV, Excel, or TSV file."):
         read_file(file_path)
 
+
 def test_save_dataframe_as_tsv(dataframe: pd.DataFrame, tmp_path: str):
     out_path = os.path.join(tmp_path, "batch_specification1.tsv")
+
     save_dataframe_as_tsv(dataframe, out_path)
     actual = pd.read_csv(out_path, sep='\t')
+
     assert actual.equals(dataframe)
+
 
 def test_read_save_dataframe_as_tsv_error(dataframe: pd.DataFrame, tmp_path: str):
     out_path = os.path.join(tmp_path, "batch_specification1.prn")
     with pytest.raises(ValueError, match = r"Unsupported file format. Please point to a TSV file."):
         save_dataframe_as_tsv(dataframe, out_path)
 
+
 def test_process_metadata_file(processed_dataframe: pd.DataFrame, tmp_path: str):
     file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
     out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
+
     process_metadata_file(file_path, out_path) 
     actual = pd.read_csv(out_path, sep='\t')
+
     assert actual.equals(processed_dataframe)
 
-@pytest.mark.parametrize("file_name",
-                         ["batch_specification1.csv", "batch_specification1.xlsx", "batch_specification1.txt"])
-def test_read_file_colnames_input(file_name: str, dataframe: pd.DataFrame):
-    file_path = __location__.joinpath("test_data", file_name)
-    #file_path = os.path.join("tests", "test_data", file_name)
-    actual_df = read_file(str(file_path))
-    actual = actual_df.columns
-    expected = dataframe.columns
-    assert expected.equals(actual)
-
-def test_process_metadata_file_colnames_output(processed_dataframe: pd.DataFrame, tmp_path: str):
-    file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
-    out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
-    process_metadata_file(file_path, out_path) 
-    expected = processed_dataframe.columns
-    actual_df = pd.read_csv(out_path, sep='\t')
-    actual = actual_df.columns
-    assert expected.equals(actual)
 
 def test_process_alkane_ri_file(alkanes: pd.DataFrame, tmp_path: str):
     file_path = os.path.join("tests", "test_data", "Alkane_RI_ATHLETE_1.txt")
     out_path = os.path.join(tmp_path, "processed_Alkane_RI_ATHLETE_1.tsv")
+
     process_alkane_ri_file(file_path, out_path) 
     actual = pd.read_csv(out_path, sep ='\t')
+
     assert actual.equals(alkanes)
+
+
+def test_process_metadata_file_raise_columns_missing(tmp_path: str):
+    file_path = os.path.join("tests", "test_data", "invalid_metadata.txt")
+    out = os.path.join(tmp_path, "res.tsv")
+
+    with pytest.raises(Exception) as e:
+        process_metadata_file(file_path, out)
+    
+    assert str(e.value) == '"[\'File name\', \'Class ID\', \'Analytical order\'] not in index"'
+
+
+@pytest.mark.parametrize("file_name, expected", [
+    ["18_QC 4 _18", True],
+    ["1_QC_1", True],
+    ["blub", False],
+    ["sample_0.56", False],
+    ["_170", False]
+])
+def test_validate_filename(file_name, expected):
+    assert validate_filename(file_name) == expected

@@ -60,6 +60,7 @@ def process_metadata_file(file_path: str, out_path: str) -> None:
     df['sampleName'] = df['sampleName'].str.replace(' ', '_')
     save_dataframe_as_tsv(df, out_path)
 
+
 def process_alkane_ri_file(file_path: str, out_path: str) -> None:
     """Processes an alkane file, keeping and renaming specific columns.
 
@@ -77,3 +78,8 @@ def process_alkane_ri_file(file_path: str, out_path: str) -> None:
     df = df.rename(columns=columns_to_keep)
     save_dataframe_as_tsv(df, out_path)
 
+
+def validate_filename(file_name: str) -> bool:
+    is_not_empty = lambda x: x is not ''
+    tokens: list[str] = list(filter(is_not_empty, file_name.split('_')))
+    return len(tokens) > 1 and tokens[-1].isdigit()
