@@ -128,3 +128,6 @@ filename = "CITATION.cff"
 
 [[tool.bumpversion.files]]
 filename = "docs/conf.py"
+
+[tool.poetry.scripts]
+rcx_tk = "rcx_tk.__main__:main"
