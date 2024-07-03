@@ -73,6 +73,11 @@ def dataframe() -> pd.DataFrame:
 
 @pytest.fixture
 def processed_dataframe() -> pd.DataFrame:
+    """Creates a dataframe corresponding to processed metadata file.
+
+    Returns:
+        pd.DataFrame: Expected processed metadata dataframe.
+    """
     d = {
         "sampleName": [
             "1_instrumental_blank_01",
@@ -110,6 +115,11 @@ def processed_dataframe() -> pd.DataFrame:
 
 @pytest.fixture
 def alkanes() -> pd.DataFrame:
+    """Creates a dataframe corresponding to processed alkane file.
+
+    Returns:
+        pd.DataFrame: Expected dataframe matching alkanes test file.
+    """
     d = {
         "carbon_number": [12, 13, 14, 15, 16, 17, 18, 19, 20],
         "rt": [2.8, 3.0, 3.3, 3.7, 4.2, 4.6, 5.0, 5.4, 5.7],
@@ -127,6 +137,12 @@ def alkanes() -> pd.DataFrame:
     ],
 )
 def test_read_file(file_name: str, dataframe: pd.DataFrame):
+    """Test importing the metadata file into pandas dataframe.
+
+    Args:
+        file_name (str): The path to the input data.
+        dataframe (pd.DataFrame): Dataframe containing the metadata.
+    """
     file_path = __location__.joinpath("test_data", file_name)
     # file_path = os.path.join("tests", "test_data", file_name)
     actual = read_file(str(file_path))
@@ -134,6 +150,11 @@ def test_read_file(file_name: str, dataframe: pd.DataFrame):
 
 
 def test_read_file_error(dataframe: pd.DataFrame):
+    """Test throwing a value error if incorrect file format is supplied.
+
+    Args:
+        dataframe (pd.DataFrame): Dataframe containing the metadata.
+    """
     file_path = os.path.join("tests", "test_data", "batch_specification1.prn")
     with pytest.raises(
         ValueError,
@@ -143,6 +164,12 @@ def test_read_file_error(dataframe: pd.DataFrame):
 
 
 def test_save_dataframe_as_tsv(dataframe: pd.DataFrame, tmp_path: str):
+    """Test saving the dataframe in tsv format.
+
+    Args:
+        dataframe (pd.DataFrame): The metadata dataframe.
+        tmp_path (str): A path where the .TSV will be exported.
+    """
     out_path = os.path.join(tmp_path, "batch_specification1.tsv")
     save_dataframe_as_tsv(dataframe, out_path)
     actual = pd.read_csv(out_path, sep="\t")
@@ -150,6 +177,12 @@ def test_save_dataframe_as_tsv(dataframe: pd.DataFrame, tmp_path: str):
 
 
 def test_read_save_dataframe_as_tsv_error(dataframe: pd.DataFrame, tmp_path: str):
+    """Test throwing a value error if provided <fileName> is of different format than TSV.
+
+    Args:
+        dataframe (pd.DataFrame): The metadata dataframe.
+        tmp_path (str): A path where the .TSV will be exported.
+    """
     out_path = os.path.join(tmp_path, "batch_specification1.prn")
     with pytest.raises(ValueError, match=r"Unsupported file format. Please point to a TSV file."):
         save_dataframe_as_tsv(dataframe, out_path)
@@ -157,6 +190,12 @@ def test_read_save_dataframe_as_tsv_error(dataframe: pd.DataFrame, tmp_path: str
 
 @pytest.mark.skip(reason="Test fails due to a inconsistency in the input file (metadata)")
 def test_process_metadata_file(processed_dataframe: pd.DataFrame, tmp_path: str):
+    """Tests processing the metadata file.
+
+    Args:
+        processed_dataframe (pd.DataFrame): Metadata dataframe.
+        tmp_path (str): Path where the processed dataframe will be exported.
+    """
     file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
     out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
     process_metadata_file(file_path, out_path)
@@ -173,6 +212,12 @@ def test_process_metadata_file(processed_dataframe: pd.DataFrame, tmp_path: str)
     ],
 )
 def test_read_file_colnames_input(file_name: str, dataframe: pd.DataFrame):
+    """Tests whether there are correct columns on the input.
+
+    Args:
+        file_name (str): The name of the metadata file.
+        dataframe (pd.DataFrame): Expected dataframe.
+    """
     file_path = __location__.joinpath("test_data", file_name)
     # file_path = os.path.join("tests", "test_data", file_name)
     actual_df = read_file(str(file_path))
@@ -182,6 +227,12 @@ def test_read_file_colnames_input(file_name: str, dataframe: pd.DataFrame):
 
 
 def test_process_metadata_file_colnames_output(processed_dataframe: pd.DataFrame, tmp_path: str):
+    """Tests whether the processed dataframe outputs correct columns.
+
+    Args:
+        processed_dataframe (pd.DataFrame): An expected processed dataframe.
+        tmp_path (str): A path where the processed dataframe is exported.
+    """
     file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
     out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
     process_metadata_file(file_path, out_path)
@@ -192,6 +243,12 @@ def test_process_metadata_file_colnames_output(processed_dataframe: pd.DataFrame
 
 
 def test_process_alkane_ri_file(alkanes: pd.DataFrame, tmp_path: str):
+    """Tests processing of the alkanes input file.
+
+    Args:
+        alkanes (pd.DataFrame): An expected alkane dataframe.
+        tmp_path (str): A path where the processed alkane file is exported.
+    """
     file_path = os.path.join("tests", "test_data", "Alkane_RI_ATHLETE_1.txt")
     out_path = os.path.join(tmp_path, "processed_Alkane_RI_ATHLETE_1.tsv")
     process_alkane_ri_file(file_path, out_path)
