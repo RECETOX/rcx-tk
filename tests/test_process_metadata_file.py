@@ -13,8 +13,6 @@ __location__: Final[Path] = Path(__file__).parent.resolve()
 
 @pytest.fixture
 def dataframe() -> pd.DataFrame:
-<<<<<<< HEAD
-=======
     """Creates a dataframe corresponding to metadata test file.
 
     Returns:
@@ -23,20 +21,19 @@ def dataframe() -> pd.DataFrame:
     path_prefix: Final[str] = (
         "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\"  # noqa: E501 path prefix is expected in test data to be longer than line limit
     )
->>>>>>> 6264d42 (ruff 5)
     d = {
         "File path": [
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\1_instrumental blank_01.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\4_Alkane mix_04.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\6_instrumental blank_06.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\7_procedural blank_07.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\8_QC non-dilute_08.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\11_QC 16_11.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\12_QC 8_12.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\15_QC non-dilute_15.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\18_QC 4 _18.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\19_QC 8_19.raw",
-            "Z:\\000020-Shares\\hram\\MS_omics\\Personal Folders\\COUFALIKOVA Katerina\\ATHLETE\\finalni data zaloha\\batch1-20231121-Katerina Coufalikova\\RAW_profile\\29_instrument blank_29.raw",
+            path_prefix + "1_instrumental blank_01.raw",
+            path_prefix + "4_Alkane mix_04.raw",
+            path_prefix + "6_instrumental blank_06.raw",
+            path_prefix + "7_procedural blank_07.raw",
+            path_prefix + "8_QC non-dilute_08.raw",
+            path_prefix + "11_QC 16_11.raw",
+            path_prefix + "12_QC 8_12.raw",
+            path_prefix + "15_QC non-dilute_15.raw",
+            path_prefix + "18_QC 4 _18.raw",
+            path_prefix + "19_QC 8_19.raw",
+            path_prefix + "29_instrument blank_29.raw",
         ],
         "File name": [
             "1_instrumental blank_01",
