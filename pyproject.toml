@@ -5,6 +5,7 @@ description = "This package adjusts and cleans the metadata file provided by a u
 authors = ["Zargham Ahmad <zargham.ahmad@recetox.muni.cz>" ]
 license = "MIT"
 readme = "README.md"
+keywords = ["metadata", "alkanes", "metabolomics"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
