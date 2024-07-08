@@ -44,8 +44,6 @@ extras = dev
 [tool.ruff]
 line-length = 120
 
-
-[tool.ruff.lint]
 # Enable Pyflakes `E` and `F` codes by default.
 lint.select = [
     "F",  # Pyflakes
