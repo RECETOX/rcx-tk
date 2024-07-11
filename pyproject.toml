@@ -51,8 +51,6 @@ extras = dev
 [tool.ruff]
 line-length = 120
 
-
-[tool.ruff.lint]
 # Enable Pyflakes `E` and `F` codes by default.
 lint.select = [
     "F",  # Pyflakes
@@ -114,7 +112,6 @@ exclude = [
     "scripts",
 ]
 lint.per-file-ignores = {}
-
 
 # Allow unused variables when underscore-prefixed.
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
