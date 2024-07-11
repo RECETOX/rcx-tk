@@ -109,7 +109,6 @@ lint.per-file-ignores = {}
 
 # Allow unused variables when underscore-prefixed.
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-#lint.line-length = 120
 
 [tool.ruff.lint.isort]
 known-first-party = ["rcx_tk"]

@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 
+
 def read_file(file_path: str) -> pd.DataFrame:
     """Imports the metadata file to pandas dataframe.
 
