@@ -5,10 +5,6 @@ description = "This package adjusts and cleans the metadata file provided by a u
 authors = ["Zargham Ahmad <zargham.ahmad@recetox.muni.cz>" ]
 license = "MIT"
 readme = "README.md"
-packages = [
-  {include = "src/rcx_tk"},
-  {include = "src/rcx_tk/py.typed"},
-]
 keywords = ["metadata", "alkanes", "metabolomics"]
 
 [tool.poetry.dependencies]
