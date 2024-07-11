@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 
-
 def read_file(file_path: str) -> pd.DataFrame:
     """Imports the metadata file to pandas dataframe. 
 
@@ -14,6 +13,7 @@ def read_file(file_path: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Dataframe containing the metadata.
     """
+
 
     file_extension = os.path.splitext(file_path)[1].lower()
     if file_extension == '.csv':
@@ -48,11 +48,11 @@ def process_metadata_file(file_path: str, out_path: str) -> None:
         out_path (str): A path where processed metadata dataframe is exported.
     """
     columns_to_keep = {
-        'File name': 'sampleName',
-        'Type': 'sampleType',
-        'Class ID': 'class',
-        'Batch': 'batch',
-        'Analytical order': 'injectionOrder'
+        "File name": "sampleName",
+        "Type": "sampleType",
+        "Class ID": "class",
+        "Batch": "batch",
+        "Analytical order": "injectionOrder",
     }
 
     df = read_file(file_path)
