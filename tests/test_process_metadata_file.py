@@ -9,6 +9,7 @@ from rcx_tk.process_metadata_file import add_subjectIdentifier
 from rcx_tk.process_metadata_file import process_alkane_ri_file
 from rcx_tk.process_metadata_file import process_metadata_file
 from rcx_tk.process_metadata_file import read_file
+from rcx_tk.process_metadata_file import replace_fileName
 from rcx_tk.process_metadata_file import save_dataframe_as_tsv
 from rcx_tk.process_metadata_file import validate_filename
 
@@ -290,4 +291,18 @@ def test_add_subjectIdentifier(file_name: str, expected: str):
         expected (str): The subjectIdentifier value.
     """
     actual = add_subjectIdentifier(file_name)
+    assert actual == expected
+
+@pytest.mark.parametrize("file_name, expected", [
+   ["18_QC 4 _18", "18_QC_4__18"],
+   ["1_QC_1", "1_QC_1"]
+])
+def test_replace_fileName(file_name: str, expected: str):
+    """Tests tge replace_fileName function.
+
+    Args:
+        file_name (str): The filename.
+        expected (str): The filename with replaced spaces by underscores.
+    """
+    actual = replace_fileName(file_name)
     assert actual == expected

@@ -59,9 +59,20 @@ def process_metadata_file(file_path: str, out_path: str) -> None:
 
     df = read_file(file_path)
     df = df[list(columns_to_keep.keys())].rename(columns=columns_to_keep)
-    df["sampleName"] = df["sampleName"].str.replace(" ", "_")
+    df["sampleName"] = replace_fileName(df)
     save_dataframe_as_tsv(df, out_path)
 
+def replace_fileName(file_name) -> str:
+    """Replaces spaces with underscores in Filename.
+
+    Args:
+        file_name (_type_): The filename.
+
+    Returns:
+        str: The replaced filename.
+    """
+    x = file_name.replace(" ", "_")
+    return x
 
 def process_alkane_ri_file(file_path: str, out_path: str) -> None:
     """Processes an alkane file, keeping and renaming specific columns.
@@ -92,6 +103,8 @@ def validate_filename(file_name: str) -> bool:
 
     tokens: list[str] = list(filter(is_not_empty, file_name.split('_')))
     return len(tokens) > 1 and tokens[-1].isdigit()
+
+
 
 def add_localOrder(file_name: str) -> int:
     """Returns the localOrder value, i.e. the last n-digits after the last underscore.
