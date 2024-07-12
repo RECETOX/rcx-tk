@@ -1,4 +1,5 @@
 """Documentation about rcx_tk."""
+
 import logging
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())

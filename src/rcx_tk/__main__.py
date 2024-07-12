@@ -4,13 +4,16 @@ from rcx_tk.process_metadata_file import process_metadata_file
 
 
 @click.command()
-@click.option('--method', type=click.Choice(['metadata', 'alkanes']), required = True, help = 'A file type to be processed, either metadata or alkanes file.')
+@click.option('--method', type=click.Choice(['metadata', 'alkanes']),
+              required = True,
+              help = 'A file type to be processed, either metadata or alkanes file.')
 @click.argument('file_path')
 @click.argument('out_path')
 def main(method, file_path, out_path):
     """Process metadata or alkane file.
 
     Args:
+        method (string): Whether a metadata or alkane file should be processed.
         file_path (path): A path to the input data.
         out_path (path): A path where the processed data will be exported to.
     """
