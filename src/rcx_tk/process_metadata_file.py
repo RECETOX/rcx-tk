@@ -74,3 +74,19 @@ def process_alkane_ri_file(file_path: str, out_path: str) -> None:
     df.columns = df.columns.str.strip()
     df = df.rename(columns=columns_to_keep)
     save_dataframe_as_tsv(df, out_path)
+
+
+def validate_filename(file_name: str) -> bool:
+    """Validate a filename.
+
+    Args:
+        file_name (str): Filename to validate.
+
+    Returns:
+        bool: Validity of the filename.
+    """
+    def is_not_empty(x: str) -> bool:
+        return x != ''
+
+    tokens: list[str] = list(filter(is_not_empty, file_name.split('_')))
+    return len(tokens) > 1 and tokens[-1].isdigit()

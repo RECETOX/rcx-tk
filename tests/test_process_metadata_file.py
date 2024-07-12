@@ -7,6 +7,7 @@ from rcx_tk.process_metadata_file import process_alkane_ri_file
 from rcx_tk.process_metadata_file import process_metadata_file
 from rcx_tk.process_metadata_file import read_file
 from rcx_tk.process_metadata_file import save_dataframe_as_tsv
+from rcx_tk.process_metadata_file import validate_filename
 
 __location__: Final[Path] = Path(__file__).parent.resolve()
 
@@ -113,6 +114,7 @@ def processed_dataframe() -> pd.DataFrame:
     return pd.DataFrame(data=d)
 
 
+
 @pytest.fixture
 def alkanes() -> pd.DataFrame:
     """Creates a dataframe corresponding to processed alkane file.
@@ -146,6 +148,7 @@ def test_read_file(file_name: str, dataframe: pd.DataFrame):
     file_path = __location__.joinpath("test_data", file_name)
     # file_path = os.path.join("tests", "test_data", file_name)
     actual = read_file(str(file_path))
+    # assert
     assert actual.equals(dataframe)
 
 
@@ -171,6 +174,7 @@ def test_save_dataframe_as_tsv(dataframe: pd.DataFrame, tmp_path: str):
         tmp_path (str): A path where the .TSV will be exported.
     """
     out_path = os.path.join(tmp_path, "batch_specification1.tsv")
+
     save_dataframe_as_tsv(dataframe, out_path)
     actual = pd.read_csv(out_path, sep="\t")
     assert actual.equals(dataframe)
@@ -198,48 +202,11 @@ def test_process_metadata_file(processed_dataframe: pd.DataFrame, tmp_path: str)
     """
     file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
     out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
+
     process_metadata_file(file_path, out_path)
     actual = pd.read_csv(out_path, sep="\t")
+
     assert actual.equals(processed_dataframe)
-
-
-@pytest.mark.parametrize(
-    "file_name",
-    [
-        "batch_specification1.csv",
-        "batch_specification1.xlsx",
-        "batch_specification1.txt",
-    ],
-)
-def test_read_file_colnames_input(file_name: str, dataframe: pd.DataFrame):
-    """Tests whether there are correct columns on the input.
-
-    Args:
-        file_name (str): The name of the metadata file.
-        dataframe (pd.DataFrame): Expected dataframe.
-    """
-    file_path = __location__.joinpath("test_data", file_name)
-    # file_path = os.path.join("tests", "test_data", file_name)
-    actual_df = read_file(str(file_path))
-    actual = actual_df.columns
-    expected = dataframe.columns
-    assert expected.equals(actual)
-
-
-def test_process_metadata_file_colnames_output(processed_dataframe: pd.DataFrame, tmp_path: str):
-    """Tests whether the processed dataframe outputs correct columns.
-
-    Args:
-        processed_dataframe (pd.DataFrame): An expected processed dataframe.
-        tmp_path (str): A path where the processed dataframe is exported.
-    """
-    file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
-    out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
-    process_metadata_file(file_path, out_path)
-    expected = processed_dataframe.columns
-    actual_df = pd.read_csv(out_path, sep="\t")
-    actual = actual_df.columns
-    assert expected.equals(actual)
 
 
 def test_process_alkane_ri_file(alkanes: pd.DataFrame, tmp_path: str):
@@ -251,6 +218,31 @@ def test_process_alkane_ri_file(alkanes: pd.DataFrame, tmp_path: str):
     """
     file_path = os.path.join("tests", "test_data", "Alkane_RI_ATHLETE_1.txt")
     out_path = os.path.join(tmp_path, "processed_Alkane_RI_ATHLETE_1.tsv")
+
     process_alkane_ri_file(file_path, out_path)
-    actual = pd.read_csv(out_path, sep="\t")
+    actual = pd.read_csv(out_path, sep ="\t")
+
     assert actual.equals(alkanes)
+
+
+def test_process_metadata_file_raise_columns_missing(tmp_path: str):
+    """Test for raising exception if column is missing."""
+    file_path = os.path.join("tests", "test_data", "invalid_metadata.txt")
+    out = os.path.join(tmp_path, "res.tsv")
+
+    with pytest.raises(Exception) as e:
+        process_metadata_file(file_path, out)
+
+    assert str(e.value) == '"[\'File name\', \'Class ID\', \'Analytical order\'] not in index"'
+
+
+@pytest.mark.parametrize("file_name, expected", [
+    ["18_QC 4 _18", True],
+    ["1_QC_1", True],
+    ["blub", False],
+    ["sample_0.56", False],
+    ["_170", False]
+])
+def test_validate_filename(file_name: str, expected: bool):
+    """Test to validate filenames."""
+    assert validate_filename(file_name) == expected
