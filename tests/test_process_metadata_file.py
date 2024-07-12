@@ -114,43 +114,43 @@ def processed_dataframe() -> pd.DataFrame:
         "batch": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         "injectionOrder": [1, 4, 6, 7, 8, 11, 12, 15, 18, 19, 29],
         "sequenceIdentifier" : [
-            "1_instrumental_blank",
-            "4_Alkane_mix",
-            "6_instrumental_blank",
-            "7_procedural_blank",
-            "8_QC_non-dilute",
-            "11_QC_16",
-            "12_QC_8",
-            "15_QC_non-dilute",
-            "18_QC_4",
-            "19_QC_8",
-            "29_instrument_blank"
+            "1_instrumental blank",
+            "4_Alkane mix",
+            "6_instrumental blank",
+            "7_procedural blank",
+            "8_QC non-dilute",
+            "11_QC 16",
+            "12_QC 8",
+            "15_QC non-dilute",
+            "18_QC 4",
+            "19_QC 8",
+            "29_instrument blank"
         ],
         "subjectIdentifier": [
-            "instrumental_blank",
-            "Alkane_mix",
-            "instrumental_blank",
-            "procedural_blank",
-            "QC_non-dilute",
-            "QC_16",
-            "QC_8",
-            "QC_non-dilute",
-            "QC_4",
-            "QC_8",
-            "instrument_blank"
+            "instrumental blank",
+            "Alkane mix",
+            "instrumental blank",
+            "procedural blank",
+            "QC non-dilute",
+            "QC 16",
+            "QC 8",
+            "QC non-dilute",
+            "QC 4",
+            "QC 8",
+            "instrument blank"
         ],
         "localOrder": [
-            "01",
-            "04",
-            "06",
-            "07",
-            "08",
-            "11",
-            "12",
-            "15",
-            "18",
-            "19",
-            "29"
+            1,
+            4,
+            6,
+            7,
+            8,
+            11,
+            12,
+            15,
+            18,
+            19,
+            29
         ]
     }
 
@@ -318,8 +318,9 @@ def test_add_sequenceIdentifier(file_name: str, expected: str):
     assert actual == expected
 
 @pytest.mark.parametrize("file_name, expected", [
-    ["18_QC 4 _18", "QC 4"],
-   ["1_QC_1", "QC"]
+   ["18_QC 4 _18", "QC 4"],
+   ["1_QC_1", "QC"],
+   ["11_QC 16_11", "QC 16"]
 ])
 def test_add_subjectIdentifier(file_name: str, expected: str):
     """Tests the add_subjectIdentifier function.

@@ -54,26 +54,62 @@ def process_metadata_file(file_path: str, out_path: str) -> None:
     save_dataframe_as_tsv(df, out_path)
 
 def process_metadata(df: pd.DataFrame) -> pd.DataFrame:
-    columns_to_keep = {
+    df = rearrange_columns(df)
+    validateFileNames(df)
+    df = derive_additional_metadata(df)
+    df = cleanup(df)
+    return df
+
+def cleanup(df):
+    df = df.drop('File name', axis = 1)    
+    column_to_move = df.pop("sampleName")
+    df.insert(0, "sampleName", column_to_move)
+    return df
+
+def derive_additional_metadata(df):
+    df['sampleName'] = df['File name'].apply(replace_fileName)
+    df['sequenceIdentifier'] = df['File name'].apply(add_sequenceIdentifier)
+    df['subjectIdentifier'] = df['File name'].apply(add_subjectIdentifier)
+    df['localOrder'] = df['File name'].apply(add_localOrder)
+    return df
+
+def rearrange_columns(df):
+    columns_to_keep = [
+        "File name",
+        "Type",
+        "Class ID",
+        "Batch",
+        "Analytical order"
+    ]
+
+    df = df[list(columns_to_keep)]
+
+    df = df.rename(columns={
         "Type": "sampleType",
         "Class ID": "class",
         "Batch": "batch",
-        "Analytical order": "injectionOrder",
-    }
-    df = df[list(columns_to_keep.keys(), "File name")].rename(columns=columns_to_keep)
-
-    df['sampleName'] = df['File name'].transform(replace_fileName)
-    df['sequenceIdentifier'] = df['File name'].transform(add_sequenceIdentifier)
-    df['subjectIdentifier'] = df['File name'].transform(add_subjectIdentifier)
-    df['localOrder'] = df['File name'].transform(add_localOrder)
-    df = df.drop('File name', axis = 1)
+        "Analytical order": "injectionOrder"
+    })
+    
     return df
 
-def replace_fileName(file_name) -> str:
+def validateFileNames(df: pd.DataFrame) -> None:
+    """Validates the file names.
+
+    Args:
+        df (pd.DataFrame): A dataframe to process.
+
+    Raises:
+        ValueError: An error if there is any invalid file name.
+    """
+    if not df['File name'].apply(validate_filename).all():
+        raise ValueError("Invalid File name.")
+    
+def replace_fileName(file_name: str) -> str:
     """Replaces spaces with underscores in Filename.
 
     Args:
-        file_name (_type_): The filename.
+        file_name (str): The filename.
 
     Returns:
         str: The replaced filename.
@@ -160,6 +196,6 @@ def add_subjectIdentifier(file_name: str) -> str:
     Returns:
         str: The subjectIdentifier value.
     """
-    a, b, c = re.findall(r'(\d+_)(.*(?:\D|^))(_\d+)', file_name)[0]
+    _, b, _ = re.findall(r'(\d+_)(.*)(_\d+)', file_name)[0]
     b = b.strip()
     return(b)
