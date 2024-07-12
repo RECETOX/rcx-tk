@@ -13,6 +13,7 @@ from rcx_tk.process_metadata_file import replace_fileName
 from rcx_tk.process_metadata_file import save_dataframe_as_tsv
 from rcx_tk.process_metadata_file import separate_filename
 from rcx_tk.process_metadata_file import validate_filename
+from rcx_tk.process_metadata_file import validateInjectionOrder
 
 __location__: Final[Path] = Path(__file__).parent.resolve()
 
@@ -361,3 +362,13 @@ def test_separate_filename(file_name: str, expected: str):
     """
     actual = separate_filename(file_name)
     assert actual == expected
+
+def test_validateInjectionOrder(processed_dataframe: pd.DataFrame):
+    """Tests whether injectionOrder is of integer type.
+
+    Args:
+        processed_dataframe (pd.DataFrame): A processed metadata dataframe.
+    """
+    expected = True
+    actual = validateInjectionOrder(processed_dataframe)
+    assert expected == actual

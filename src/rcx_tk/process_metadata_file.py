@@ -64,6 +64,7 @@ def process_metadata(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = rearrange_columns(df)
     validateFileNames(df)
+    validateInjectionOrder(df)
     df = derive_additional_metadata(df)
     df = cleanup(df)
     return df
@@ -81,6 +82,18 @@ def cleanup(df: pd.DataFrame) -> pd.DataFrame:
     column_to_move = df.pop("sampleName")
     df.insert(0, "sampleName", column_to_move)
     return df
+
+def validateInjectionOrder(df: pd.DataFrame) -> bool:
+    """Validates if injectionOrder is of integer type.
+
+    Args:
+        df (pd.DataFrame): The metadata dataframe.
+
+    Returns:
+        bool: Whether the injectionOrder is integer.
+    """
+    res = all(x.is_integer() for x in df['injectionOrder'])
+    return(res)
 
 def derive_additional_metadata(df: pd.DataFrame) -> pd.DataFrame:
     """Derives additional metadata columns.
