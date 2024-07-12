@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Final
 import pandas as pd
 import pytest
-from rcx_tk.process_metadata_file import process_alkane_ri_file
+from rcx_tk.process_metadata_file import add_localOrder, process_alkane_ri_file
 from rcx_tk.process_metadata_file import process_metadata_file
 from rcx_tk.process_metadata_file import read_file
 from rcx_tk.process_metadata_file import save_dataframe_as_tsv
@@ -246,3 +246,11 @@ def test_process_metadata_file_raise_columns_missing(tmp_path: str):
 def test_validate_filename(file_name: str, expected: bool):
     """Test to validate filenames."""
     assert validate_filename(file_name) == expected
+
+@pytest.mark.parametrize("file_name, expected", [
+    ["18_QC 4 _18", 18],
+    ["1_QC_1", 1]
+])
+def test_add_localOrder(file_name: str, expected: int):
+    actual = add_localOrder(file_name)
+    assert actual == expected

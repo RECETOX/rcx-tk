@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import re
 
 
 def read_file(file_path: str) -> pd.DataFrame:
@@ -90,3 +91,15 @@ def validate_filename(file_name: str) -> bool:
 
     tokens: list[str] = list(filter(is_not_empty, file_name.split('_')))
     return len(tokens) > 1 and tokens[-1].isdigit()
+
+def add_localOrder(file_name: str) -> int:
+    """Returns the localOrder value, i.e. the last n-digits after the last underscore.
+
+    Args:
+        file_name (str): The filename.
+
+    Returns:
+        int: The localOrder value.
+    """
+    a, b = re.findall(r'(.*(?:\D|^))(\d+)', file_name)[0]
+    return(int(b))
