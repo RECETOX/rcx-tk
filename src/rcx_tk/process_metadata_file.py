@@ -130,3 +130,16 @@ def separate_filename(file_name: str) -> Tuple[str, str]:
     """
     a, b = re.findall(r'(.*(?:\D|^))(\d+)', file_name)[0]
     return (a, b)
+
+def add_subjectIdentifier(file_name: str) -> str:
+    """Returns the subjectIdentifier value, i.e. everything between [digit_] and [_digit].
+
+    Args:
+        file_name (str): The filename.
+
+    Returns:
+        str: The subjectIdentifier value.
+    """
+    a, b, c = re.findall(r'(\d+_)(.*(?:\D|^))(_\d+)', file_name)[0]
+    b = b.strip()
+    return(b)
