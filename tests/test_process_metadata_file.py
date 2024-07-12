@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Final
 import pandas as pd
 import pytest
-from rcx_tk.process_metadata_file import add_localOrder
+from rcx_tk.process_metadata_file import add_localOrder, separate_filename
 from rcx_tk.process_metadata_file import add_sequenceIdentifier
 from rcx_tk.process_metadata_file import add_subjectIdentifier
 from rcx_tk.process_metadata_file import process_alkane_ri_file
@@ -305,4 +305,13 @@ def test_replace_fileName(file_name: str, expected: str):
         expected (str): The filename with replaced spaces by underscores.
     """
     actual = replace_fileName(file_name)
+    assert actual == expected
+
+
+@pytest.mark.parametrize("file_name, expected", [
+   ["18_QC 4 _18", ["18_QC_4, _18"]],
+   ["1_QC_1", ["1_QC, _1"]]
+])
+def test_separate_filename(file_name: str, expected: str):
+    actual = separate_filename(file_name)
     assert actual == expected
