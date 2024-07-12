@@ -3,7 +3,8 @@ from pathlib import Path
 from typing import Final
 import pandas as pd
 import pytest
-from rcx_tk.process_metadata_file import add_localOrder, process_alkane_ri_file
+from rcx_tk.process_metadata_file import add_localOrder
+from rcx_tk.process_metadata_file import process_alkane_ri_file
 from rcx_tk.process_metadata_file import process_metadata_file
 from rcx_tk.process_metadata_file import read_file
 from rcx_tk.process_metadata_file import save_dataframe_as_tsv
@@ -252,5 +253,11 @@ def test_validate_filename(file_name: str, expected: bool):
     ["1_QC_1", 1]
 ])
 def test_add_localOrder(file_name: str, expected: int):
+    """Tests the add_localOrder function.
+
+    Args:
+        file_name (str): The filename.
+        expected (int): The localOrder value.
+    """
     actual = add_localOrder(file_name)
     assert actual == expected
