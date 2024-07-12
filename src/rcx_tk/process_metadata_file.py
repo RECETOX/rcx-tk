@@ -1,8 +1,9 @@
 import os
 import pandas as pd
 
+
 def read_file(file_path: str) -> pd.DataFrame:
-    """Imports the metadata file to pandas dataframe. 
+    """Imports the metadata file to pandas dataframe.
 
     Args:
         file_path (str): The path to the input data.
@@ -13,14 +14,12 @@ def read_file(file_path: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Dataframe containing the metadata.
     """
-
-
     file_extension = os.path.splitext(file_path)[1].lower()
     if file_extension == '.csv':
         return pd.read_csv(file_path, encoding='UTF-8')
     elif file_extension in ['.xls', '.xlsx']:
         return pd.read_excel(file_path)
-    elif file_extension in ['.tsv', '.txt']: 
+    elif file_extension in ['.tsv', '.txt']:
         return pd.read_csv(file_path, sep='\t')
     else:
         raise ValueError("Unsupported file format. Please provide a CSV, Excel, or TSV file.")
@@ -80,6 +79,6 @@ def process_alkane_ri_file(file_path: str, out_path: str) -> None:
 
 
 def validate_filename(file_name: str) -> bool:
-    is_not_empty = lambda x: x is not ''
+    is_not_empty = lambda x: x != ''
     tokens: list[str] = list(filter(is_not_empty, file_name.split('_')))
     return len(tokens) > 1 and tokens[-1].isdigit()

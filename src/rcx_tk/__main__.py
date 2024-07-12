@@ -1,6 +1,6 @@
 import click
-
-from rcx_tk.process_metadata_file import process_alkane_ri_file, process_metadata_file
+from rcx_tk.process_metadata_file import process_alkane_ri_file
+from rcx_tk.process_metadata_file import process_metadata_file
 
 
 @click.command()
