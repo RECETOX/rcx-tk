@@ -54,26 +54,58 @@ def process_metadata_file(file_path: str, out_path: str) -> None:
     save_dataframe_as_tsv(df, out_path)
 
 def process_metadata(df: pd.DataFrame) -> pd.DataFrame:
+    """Processes the metadata dataframe.
+
+    Args:
+        df (pd.DataFrame): The metadata dataframe.
+
+    Returns:
+        pd.DataFrame: A metadata dataframe with rearranged and newly derived columns.
+    """
     df = rearrange_columns(df)
     validateFileNames(df)
     df = derive_additional_metadata(df)
     df = cleanup(df)
     return df
 
-def cleanup(df):
-    df = df.drop('File name', axis = 1)    
+def cleanup(df: pd.DataFrame) -> pd.DataFrame:
+    """Removes the file Name column and moves the sampleName col.
+
+    Args:
+        df (pd.DataFrame): The metadata dataframe.
+
+    Returns:
+        pd.DataFrame: The processed dataframe.
+    """
+    df = df.drop('File name', axis = 1)
     column_to_move = df.pop("sampleName")
     df.insert(0, "sampleName", column_to_move)
     return df
 
-def derive_additional_metadata(df):
+def derive_additional_metadata(df: pd.DataFrame) -> pd.DataFrame:
+    """Derives additional metadata columns.
+
+    Args:
+        df (pd.DataFrame): The metadata dataframe.
+
+    Returns:
+        pd.DataFrame: The processed dataframe.
+    """
     df['sampleName'] = df['File name'].apply(replace_fileName)
     df['sequenceIdentifier'] = df['File name'].apply(add_sequenceIdentifier)
     df['subjectIdentifier'] = df['File name'].apply(add_subjectIdentifier)
     df['localOrder'] = df['File name'].apply(add_localOrder)
     return df
 
-def rearrange_columns(df):
+def rearrange_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Rearranges the columns.
+
+    Args:
+        df (pd.DataFrame): The metadata dataframe.
+
+    Returns:
+        pd.DataFrame: The processed dataframe.
+    """
     columns_to_keep = [
         "File name",
         "Type",
@@ -90,7 +122,7 @@ def rearrange_columns(df):
         "Batch": "batch",
         "Analytical order": "injectionOrder"
     })
-    
+
     return df
 
 def validateFileNames(df: pd.DataFrame) -> None:
@@ -104,7 +136,7 @@ def validateFileNames(df: pd.DataFrame) -> None:
     """
     if not df['File name'].apply(validate_filename).all():
         raise ValueError("Invalid File name.")
-    
+
 def replace_fileName(file_name: str) -> str:
     """Replaces spaces with underscores in Filename.
 

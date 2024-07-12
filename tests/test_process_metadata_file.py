@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Final
 import pandas as pd
 import pytest
-from rcx_tk.process_metadata_file import add_localOrder, separate_filename
+from rcx_tk.process_metadata_file import add_localOrder
 from rcx_tk.process_metadata_file import add_sequenceIdentifier
 from rcx_tk.process_metadata_file import add_subjectIdentifier
 from rcx_tk.process_metadata_file import process_alkane_ri_file
@@ -11,6 +11,7 @@ from rcx_tk.process_metadata_file import process_metadata_file
 from rcx_tk.process_metadata_file import read_file
 from rcx_tk.process_metadata_file import replace_fileName
 from rcx_tk.process_metadata_file import save_dataframe_as_tsv
+from rcx_tk.process_metadata_file import separate_filename
 from rcx_tk.process_metadata_file import validate_filename
 
 __location__: Final[Path] = Path(__file__).parent.resolve()
@@ -352,5 +353,11 @@ def test_replace_fileName(file_name: str, expected: str):
    ["1_QC_1", ("1_QC_", "1")]
 ])
 def test_separate_filename(file_name: str, expected: str):
+    """Tests the regex to separate filenames.
+
+    Args:
+        file_name (str): The filename.
+        expected (str): The splitted filename.
+    """
     actual = separate_filename(file_name)
     assert actual == expected
