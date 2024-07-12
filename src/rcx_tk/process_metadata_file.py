@@ -49,18 +49,25 @@ def process_metadata_file(file_path: str, out_path: str) -> None:
         file_path (str): A path to the metadata file.
         out_path (str): A path where processed metadata dataframe is exported.
     """
+    df = read_file(file_path)
+    df = process_metadata(df)
+    save_dataframe_as_tsv(df, out_path)
+
+def process_metadata(df: pd.DataFrame) -> pd.DataFrame:
     columns_to_keep = {
-        "File name": "sampleName",
         "Type": "sampleType",
         "Class ID": "class",
         "Batch": "batch",
         "Analytical order": "injectionOrder",
     }
+    df = df[list(columns_to_keep.keys(), "File name")].rename(columns=columns_to_keep)
 
-    df = read_file(file_path)
-    df = df[list(columns_to_keep.keys())].rename(columns=columns_to_keep)
-    df["sampleName"] = replace_fileName(df)
-    save_dataframe_as_tsv(df, out_path)
+    df['sampleName'] = df['File name'].transform(replace_fileName)
+    df['sequenceIdentifier'] = df['File name'].transform(add_sequenceIdentifier)
+    df['subjectIdentifier'] = df['File name'].transform(add_subjectIdentifier)
+    df['localOrder'] = df['File name'].transform(add_localOrder)
+    df = df.drop('File name', axis = 1)
+    return df
 
 def replace_fileName(file_name) -> str:
     """Replaces spaces with underscores in Filename.

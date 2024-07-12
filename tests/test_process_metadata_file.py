@@ -93,9 +93,9 @@ def processed_dataframe() -> pd.DataFrame:
             "11_QC_16_11",
             "12_QC_8_12",
             "15_QC_non-dilute_15",
-            "18_QC_4_18",
+            "18_QC_4__18",
             "19_QC_8_19",
-            "29_instrument_blank_29",
+            "29_instrument_blank_29"
         ],
         "sampleType": [
             "Standard",
@@ -113,6 +113,45 @@ def processed_dataframe() -> pd.DataFrame:
         "class": [3, 5, 3, 6, 2, 2, 2, 2, 2, 2, 3],
         "batch": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         "injectionOrder": [1, 4, 6, 7, 8, 11, 12, 15, 18, 19, 29],
+        "sequenceIdentifier" : [
+            "1_instrumental_blank",
+            "4_Alkane_mix",
+            "6_instrumental_blank",
+            "7_procedural_blank",
+            "8_QC_non-dilute",
+            "11_QC_16",
+            "12_QC_8",
+            "15_QC_non-dilute",
+            "18_QC_4",
+            "19_QC_8",
+            "29_instrument_blank"
+        ],
+        "subjectIdentifier": [
+            "instrumental_blank",
+            "Alkane_mix",
+            "instrumental_blank",
+            "procedural_blank",
+            "QC_non-dilute",
+            "QC_16",
+            "QC_8",
+            "QC_non-dilute",
+            "QC_4",
+            "QC_8",
+            "instrument_blank"
+        ],
+        "localOrder": [
+            "01",
+            "04",
+            "06",
+            "07",
+            "08",
+            "11",
+            "12",
+            "15",
+            "18",
+            "19",
+            "29"
+        ]
     }
 
     return pd.DataFrame(data=d)
@@ -196,7 +235,6 @@ def test_read_save_dataframe_as_tsv_error(dataframe: pd.DataFrame, tmp_path: str
         save_dataframe_as_tsv(dataframe, out_path)
 
 
-@pytest.mark.skip(reason="Test fails due to a inconsistency in the input file (metadata)")
 def test_process_metadata_file(processed_dataframe: pd.DataFrame, tmp_path: str):
     """Tests processing the metadata file.
 
@@ -309,8 +347,8 @@ def test_replace_fileName(file_name: str, expected: str):
 
 
 @pytest.mark.parametrize("file_name, expected", [
-   ["18_QC 4 _18", ["18_QC_4, _18"]],
-   ["1_QC_1", ["1_QC, _1"]]
+   ["18_QC 4 _18", ("18_QC 4 _", "18")],
+   ["1_QC_1", ("1_QC_", "1")]
 ])
 def test_separate_filename(file_name: str, expected: str):
     actual = separate_filename(file_name)
