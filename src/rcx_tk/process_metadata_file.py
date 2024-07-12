@@ -1,5 +1,6 @@
 import os
 import re
+from typing import Tuple
 import pandas as pd
 
 
@@ -101,7 +102,7 @@ def add_localOrder(file_name: str) -> int:
     Returns:
         int: The localOrder value.
     """
-    a, b = re.findall(r'(.*(?:\D|^))(\d+)', file_name)[0]
+    _, b = separate_filename(file_name)
     return(int(b))
 
 def add_sequenceIdentifier(file_name: str) -> str:
@@ -113,6 +114,19 @@ def add_sequenceIdentifier(file_name: str) -> str:
     Returns:
         str: The sequenceIdentifier value.
     """
-    a, b = re.findall(r'(.*(?:\D|^))(_\d+)', file_name)[0]
+    a, _ = separate_filename(file_name)
+    a = a.rstrip('_')
     a = a.strip()
     return(a)
+
+def separate_filename(file_name: str) -> Tuple[str, str]:
+    """Splits the file_name based on a regex.
+
+    Args:
+        file_name (str): The filename.
+
+    Returns:
+        Tuple[str, str]: Splitted file_name.
+    """
+    a, b = re.findall(r'(.*(?:\D|^))(\d+)', file_name)[0]
+    return (a, b)
