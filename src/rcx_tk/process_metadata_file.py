@@ -103,3 +103,16 @@ def add_localOrder(file_name: str) -> int:
     """
     a, b = re.findall(r'(.*(?:\D|^))(\d+)', file_name)[0]
     return(int(b))
+
+def add_sequenceIdentifier(file_name: str) -> str:
+    """Returns the sequenceIdentifier value, i.e. everything before last _[digits].
+
+    Args:
+        file_name (str): The filename.
+
+    Returns:
+        str: The sequenceIdentifier value.
+    """
+    a, b = re.findall(r'(.*(?:\D|^))(_\d+)', file_name)[0]
+    a = a.strip()
+    return(a)

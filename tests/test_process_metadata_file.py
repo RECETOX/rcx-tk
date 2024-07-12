@@ -4,6 +4,7 @@ from typing import Final
 import pandas as pd
 import pytest
 from rcx_tk.process_metadata_file import add_localOrder
+from rcx_tk.process_metadata_file import add_sequenceIdentifier
 from rcx_tk.process_metadata_file import process_alkane_ri_file
 from rcx_tk.process_metadata_file import process_metadata_file
 from rcx_tk.process_metadata_file import read_file
@@ -260,4 +261,18 @@ def test_add_localOrder(file_name: str, expected: int):
         expected (int): The localOrder value.
     """
     actual = add_localOrder(file_name)
+    assert actual == expected
+
+@pytest.mark.parametrize("file_name, expected", [
+   ["18_QC 4 _18", "18_QC 4"],
+   ["1_QC_1", "1_QC"]
+])
+def test_add_sequenceIdentifier(file_name: str, expected: str):
+    """Tests the sequenceIdentifier function.
+
+    Args:
+        file_name (str): The filename.
+        expected (str): The sequenceIdentifier value.
+    """
+    actual = add_sequenceIdentifier(file_name)
     assert actual == expected
