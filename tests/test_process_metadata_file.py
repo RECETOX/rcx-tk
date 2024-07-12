@@ -203,7 +203,7 @@ def test_process_metadata_file(processed_dataframe: pd.DataFrame, tmp_path: str)
     file_path = os.path.join("tests", "test_data", "batch_specification1.csv")
     out_path = os.path.join(tmp_path, "processed_batch_specification1.tsv")
 
-    process_metadata_file(file_path, out_path) 
+    process_metadata_file(file_path, out_path)
     actual = pd.read_csv(out_path, sep="\t")
 
     assert actual.equals(processed_dataframe)
@@ -219,19 +219,20 @@ def test_process_alkane_ri_file(alkanes: pd.DataFrame, tmp_path: str):
     file_path = os.path.join("tests", "test_data", "Alkane_RI_ATHLETE_1.txt")
     out_path = os.path.join(tmp_path, "processed_Alkane_RI_ATHLETE_1.tsv")
 
-    process_alkane_ri_file(file_path, out_path) 
+    process_alkane_ri_file(file_path, out_path)
     actual = pd.read_csv(out_path, sep ="\t")
 
     assert actual.equals(alkanes)
 
 
 def test_process_metadata_file_raise_columns_missing(tmp_path: str):
+    """Test for raising exception if column is missing."""
     file_path = os.path.join("tests", "test_data", "invalid_metadata.txt")
     out = os.path.join(tmp_path, "res.tsv")
 
     with pytest.raises(Exception) as e:
         process_metadata_file(file_path, out)
-    
+
     assert str(e.value) == '"[\'File name\', \'Class ID\', \'Analytical order\'] not in index"'
 
 
@@ -242,5 +243,6 @@ def test_process_metadata_file_raise_columns_missing(tmp_path: str):
     ["sample_0.56", False],
     ["_170", False]
 ])
-def test_validate_filename(file_name, expected):
+def test_validate_filename(file_name: str, expected: bool):
+    """Test to validate filenames."""
     assert validate_filename(file_name) == expected

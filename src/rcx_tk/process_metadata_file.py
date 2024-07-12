@@ -77,6 +77,16 @@ def process_alkane_ri_file(file_path: str, out_path: str) -> None:
 
 
 def validate_filename(file_name: str) -> bool:
-    is_not_empty = lambda x: x != ''
+    """Validate a filename.
+
+    Args:
+        file_name (str): Filename to validate.
+
+    Returns:
+        bool: Validity of the filename.
+    """
+    def is_not_empty(x: str) -> bool:
+        return x != ''
+
     tokens: list[str] = list(filter(is_not_empty, file_name.split('_')))
     return len(tokens) > 1 and tokens[-1].isdigit()
