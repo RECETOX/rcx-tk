@@ -76,8 +76,43 @@ poetry install
 
 ## Package version number
 
-- Releases are labelled using the [semantic versioning](https://guide.esciencecenter.nl/#/best_practices/releases?id=semantic-versioning).
+- We recommend using [semantic versioning](https://guide.esciencecenter.nl/#/best_practices/releases?id=semantic-versioning).
+- For convenience, the package version is stored in a single place: `rcx-tk/pyproject.toml` under the `tool.bumpversion` header.
+- Don't forget to update the version number before [making a release](https://guide.esciencecenter.nl/#/best_practices/releases)!
+
+## Logging
+
+- We recommend using the logging module for getting useful information from your module (instead of using print).
+- The project is set up with a logging example.
+- [Relevant section in the guide](https://guide.esciencecenter.nl/#/best_practices/language_guides/python?id=logging)
 
 ## CHANGELOG.md
 
-- To document the changes, we use the [CHANGELOG.md](https://github.com/RECETOX/rcx-tk/blob/master/CHANGELOG.md)
+- Document changes to your software package
+- [Relevant section in the guide](https://guide.esciencecenter.nl/#/best_practices/releases?id=changelogmd)
+
+## CITATION.cff
+
+- To allow others to cite your software, add a `CITATION.cff` file
+- It only makes sense to do this once there is something to cite (e.g., a software release with a DOI).
+- Follow the [making software citable](https://guide.esciencecenter.nl/#/citable_software/making_software_citable) section in the guide.
+
+## CODE_OF_CONDUCT.md
+
+- Information about how to behave professionally
+- [Relevant section in the guide](https://guide.esciencecenter.nl/#/best_practices/documentation?id=code-of-conduct)
+
+## CONTRIBUTING.md
+
+- Information about how to contribute to this software package
+- [Relevant section in the guide](https://guide.esciencecenter.nl/#/best_practices/documentation?id=contribution-guidelines)
+
+## MANIFEST.in
+
+- List non-Python files that should be included in a source distribution
+- [Relevant section in the guide](https://guide.esciencecenter.nl/#/best_practices/language_guides/python?id=building-and-packaging-code)
+
+## NOTICE
+
+- List of attributions of this project and Apache-license dependencies
+- [Relevant section in the guide](https://guide.esciencecenter.nl/#/best_practices/licensing?id=notice)
