@@ -64,8 +64,8 @@ def process_metadata(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: A metadata dataframe with rearranged and newly derived columns.
     """
     df = rearrange_columns(df)
-    validateFileNames(df)
-    validateInjectionOrder(df)
+    validate_filenames_column(df)
+    validate_injection_order(df)
     df = derive_additional_metadata(df)
     df = cleanup(df)
     return df
@@ -84,7 +84,7 @@ def cleanup(df: pd.DataFrame) -> pd.DataFrame:
     df.insert(0, "sampleName", column_to_move)
     return df
 
-def validateInjectionOrder(df: pd.DataFrame) -> bool:
+def validate_injection_order(df: pd.DataFrame) -> bool:
     """Validates if injectionOrder is of integer type.
 
     Args:
@@ -104,10 +104,10 @@ def derive_additional_metadata(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: The processed dataframe.
     """
-    df['sampleName'] = df['File name'].apply(replace_fileName)
-    df['sequenceIdentifier'] = df['File name'].apply(add_sequenceIdentifier)
-    df['subjectIdentifier'] = df['File name'].apply(add_subjectIdentifier)
-    df['localOrder'] = df['File name'].apply(add_localOrder)
+    df['sampleName'] = df['File name'].apply(replace_spaces)
+    df['sequenceIdentifier'] = df['File name'].apply(add_sequence_identifier)
+    df['subjectIdentifier'] = df['File name'].apply(add_subject_identifier)
+    df['localOrder'] = df['File name'].apply(add_local_order)
     return df
 
 def rearrange_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -138,7 +138,7 @@ def rearrange_columns(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def validateFileNames(df: pd.DataFrame) -> None:
+def validate_filenames_column(df: pd.DataFrame) -> None:
     """Validates the file names.
 
     Args:
@@ -150,7 +150,7 @@ def validateFileNames(df: pd.DataFrame) -> None:
     if not df['File name'].apply(validate_filename).all():
         raise ValueError("Invalid File name.")
 
-def replace_fileName(file_name: str) -> str:
+def replace_spaces(file_name: str) -> str:
     """Replaces spaces with underscores in Filename.
 
     Args:
@@ -194,7 +194,7 @@ def validate_filename(file_name: str) -> bool:
 
 
 
-def add_localOrder(file_name: str) -> int:
+def add_local_order(file_name: str) -> int:
     """Returns the localOrder value, i.e. the last n-digits after the last underscore.
 
     Args:
@@ -206,7 +206,7 @@ def add_localOrder(file_name: str) -> int:
     _, b = separate_filename(file_name)
     return(int(b))
 
-def add_sequenceIdentifier(file_name: str) -> str:
+def add_sequence_identifier(file_name: str) -> str:
     """Returns the sequenceIdentifier value, i.e. everything before last _[digits].
 
     Args:
@@ -232,7 +232,7 @@ def separate_filename(file_name: str) -> Tuple[str, str]:
     a, b = re.findall(r'(.*(?:\D|^))(\d+)', file_name)[0]
     return (a, b)
 
-def add_subjectIdentifier(file_name: str) -> str:
+def add_subject_identifier(file_name: str) -> str:
     """Returns the subjectIdentifier value, i.e. everything between [digit_] and [_digit].
 
     Args:

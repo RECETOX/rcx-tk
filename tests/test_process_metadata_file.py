@@ -3,17 +3,17 @@ from pathlib import Path
 from typing import Final
 import pandas as pd
 import pytest
-from rcx_tk.process_metadata_file import add_localOrder
-from rcx_tk.process_metadata_file import add_sequenceIdentifier
-from rcx_tk.process_metadata_file import add_subjectIdentifier
+from rcx_tk.process_metadata_file import add_local_order
+from rcx_tk.process_metadata_file import add_sequence_identifier
+from rcx_tk.process_metadata_file import add_subject_identifier
 from rcx_tk.process_metadata_file import process_alkane_ri_file
 from rcx_tk.process_metadata_file import process_metadata_file
 from rcx_tk.process_metadata_file import read_file
-from rcx_tk.process_metadata_file import replace_fileName
+from rcx_tk.process_metadata_file import replace_spaces
 from rcx_tk.process_metadata_file import save_dataframe_as_tsv
 from rcx_tk.process_metadata_file import separate_filename
 from rcx_tk.process_metadata_file import validate_filename
-from rcx_tk.process_metadata_file import validateInjectionOrder
+from rcx_tk.process_metadata_file import validate_injection_order
 
 __location__: Final[Path] = Path(__file__).parent.resolve()
 
@@ -300,7 +300,7 @@ def test_add_localOrder(file_name: str, expected: int):
         file_name (str): The filename.
         expected (int): The localOrder value.
     """
-    actual = add_localOrder(file_name)
+    actual = add_local_order(file_name)
     assert actual == expected
 
 @pytest.mark.parametrize("file_name, expected", [
@@ -314,7 +314,7 @@ def test_add_sequenceIdentifier(file_name: str, expected: str):
         file_name (str): The filename.
         expected (str): The sequenceIdentifier value.
     """
-    actual = add_sequenceIdentifier(file_name)
+    actual = add_sequence_identifier(file_name)
     assert actual == expected
 
 @pytest.mark.parametrize("file_name, expected", [
@@ -329,7 +329,7 @@ def test_add_subjectIdentifier(file_name: str, expected: str):
         file_name (str): The filename.
         expected (str): The subjectIdentifier value.
     """
-    actual = add_subjectIdentifier(file_name)
+    actual = add_subject_identifier(file_name)
     assert actual == expected
 
 @pytest.mark.parametrize("file_name, expected", [
@@ -343,7 +343,7 @@ def test_replace_fileName(file_name: str, expected: str):
         file_name (str): The filename.
         expected (str): The filename with replaced spaces by underscores.
     """
-    actual = replace_fileName(file_name)
+    actual = replace_spaces(file_name)
     assert actual == expected
 
 
@@ -372,5 +372,5 @@ def test_validateInjectionOrder(dataFrame: pd.DataFrame, expected: bool):
         dataFrame (pd.DataFrame): A dataframe with injection order.
         expected (bool): Whether it is of integer (True) or other data type (False)
     """
-    actual = validateInjectionOrder(dataFrame)
+    actual = validate_injection_order(dataFrame)
     assert expected == actual
