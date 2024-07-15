@@ -29,7 +29,7 @@ The dependencies are listed in the `pyproject.toml` file under the section `[too
 To create a new environment, use the micromamba:
 
 ```console
-micromamba create rcx-tk
+micromamba create -n rcx-tk poetry
 micromamba activate rcx-tk
 ```
 To install all dependencies specified in the `pyproject.toml` file, use poetry:
