@@ -1,5 +1,12 @@
 # Project Setup
 
+Here we provide some details about the project setup. Most of the choices are explained in the
+[guide](https://guide.esciencecenter.nl). Links to the relevant sections are included below. Feel free to remove this
+text when the development of the software package takes off.
+
+For a quick reference on software development, we refer to [the software guide
+checklist](https://guide.esciencecenter.nl/#/best_practices/checklist).
+
 ## Python versions
 
 This repository is set up with Python versions:
