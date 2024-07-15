@@ -1,7 +1,5 @@
 ## Badges
 
-(Customize these badges with your own links, and check https://shields.io/ or https://badgen.net/ to see which other badges are available.)
-
 | fair-software.eu recommendations | |
 | :-- | :--  |
 | (1/5) code repository              | [![github repo badge](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/RECETOX/rcx-tk) |
@@ -21,9 +19,16 @@
 
 ## How to use rcx_tk
 
-Tools for internal use
+`rcx-tk` package provides tools to process the metadata or alkane files.
 
-The project setup is documented in [project_setup.md](project_setup.md). Feel free to remove this document (and/or the link to this document) if you don't need it.
+On the input, the user is expected to supply a path to the metadata/alkane file in tsv/csv/xls/xlsx file. The file is then converted to a dataframe which is further processed. The main steps are:
+
+- columns rearrangement
+- validation of the file names
+- validation that the `injectionNumber` column is of integer type
+- derivation of new metadata: `sampleName`, `sequenceIdentifier`, `sampleIdentifier` and `localOrder`
+
+Finally, the processed dataframe is saved into user-defined location.
 
 ## Installation
 
@@ -35,9 +40,16 @@ cd rcx-tk
 python -m pip install .
 ```
 
+Upon installation, the tool can be run also using the poetry:
+
+```console
+poetry run rcx_tk --method='' <file-path-to-input-data> <file-path-to-output-data>
+```
+
+
 ## Documentation
 
-Include a link to your project's full documentation here.
+The project is documented [here](https://rcx-tk.readthedocs.io/en/latest/?badge=latest).
 
 ## Contributing
 
