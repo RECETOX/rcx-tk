@@ -2,26 +2,31 @@
 
 If you're looking for user documentation, go [here](README.md).
 
-## Development install
+## Package installation
 
-```shell
-# Create a virtual environment, e.g. with
-python -m venv env
+To create a new environment, use the micromamba:
 
-# activate virtual environment
-source env/bin/activate
+```console
+micromamba create -n rcx-tk poetry
+micromamba activate rcx-tk
+```
+To install all dependencies specified in the `pyproject.toml` file, use poetry:
 
-# make sure to have a recent version of pip and setuptools
-python -m pip install --upgrade pip setuptools
-
-# (from the project root directory)
-# install rcx_tk as an editable package
-python -m pip install --no-cache-dir --editable .
-# install development dependencies
-python -m pip install --no-cache-dir --editable .[dev]
+```console
+poetry install
 ```
 
-Afterwards check that the install directory is present in the `PATH` environment variable.
+A command line interface was also implemented using Click, so the package can be run by either using python3:
+
+```console
+python3 -m rcx_tk --method='' <path-to-input-data> <path-to-output-data>
+```
+
+or using poetry:
+
+```console
+poetry run rcx_tk --method='' <file-path-to-input-data> <file-path-to-output-data>
+```
 
 ## Running the tests
 
@@ -116,9 +121,9 @@ make doctest
 Bumping the version across all files is done with [bump-my-version](https://github.com/callowayproject/bump-my-version), e.g.
 
 ```shell
-bump-my-version bump major  # bumps from e.g. 0.3.2 to 1.0.0
-bump-my-version bump minor  # bumps from e.g. 0.3.2 to 0.4.0
-bump-my-version bump patch  # bumps from e.g. 0.3.2 to 0.3.3
+poetry version major  # bumps from e.g. 0.3.2 to 1.0.0
+poetry version minor  # bumps from e.g. 0.3.2 to 0.4.0
+poetry version patch  # bumps from e.g. 0.3.2 to 0.3.3
 ```
 
 ## Making a release
@@ -145,48 +150,35 @@ In a new terminal:
 # has the state of origin/main branch
 cd $(mktemp -d rcx_tk.XXXXXX)
 git clone git@github.com:RECETOX/rcx-tk .
-
-# make sure to have a recent version of pip and the publishing dependencies
-python -m pip install --upgrade pip
-python -m pip install .[publishing]
-
-# create the source distribution and the wheel
-python -m build
-
-# upload to test pypi instance (requires credentials)
-python -m twine upload --repository testpypi dist/*
 ```
 
-Visit
-[https://test.pypi.org/project/rcx_tk](https://test.pypi.org/project/rcx_tk)
-and verify that your package was uploaded successfully. Keep the terminal open, we'll need it later.
+Create and activate a new environment:
 
-In a new terminal, without an activated virtual environment or an env directory:
-
-```shell
-cd $(mktemp -d rcx_tk-test.XXXXXX)
-
-# prepare a clean virtual environment and activate it
-python -m venv env
-source env/bin/activate
-
-# make sure to have a recent version of pip and setuptools
-python -m pip install --upgrade pip
-
-# install from test pypi instance:
-python -m pip -v install --no-cache-dir \
---index-url https://test.pypi.org/simple/ \
---extra-index-url https://pypi.org/simple rcx_tk
+```console
+micromamba create -n rcx-tk-pypi poetry
+micromamba activate rcx-tk-pypi
 ```
 
-Check that the package works as it should when installed from pypitest.
+Create an account on PyPI.
 
-Then upload to pypi.org with:
+In the Account settings, find the API tokens section and click on "Add API token". Copy your token.
 
-```shell
-# Back to the first terminal,
-# FINAL STEP: upload to PyPI (requires credentials)
-python -m twine upload dist/*
+Add your API token to Poetry:
+
+```console
+poetry config pypi-token.pypi your-api-token
+```
+
+Build your project:
+
+```console
+poetry build
+```
+
+Publish your package to PyPI:
+
+```console
+poetry publish
 ```
 
 ### (3/3) GitHub

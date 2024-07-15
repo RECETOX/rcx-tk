@@ -13,5 +13,7 @@ repository-code: "https://github.com/RECETOX/rcx-tk"
 keywords:
   - rcx
   - process metadata
+  - alkanes
+  - metabolomics
 message: "If you use this software, please cite it using these metadata."
 license: MIT

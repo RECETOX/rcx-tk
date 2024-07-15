@@ -11,9 +11,6 @@ checklist](https://guide.esciencecenter.nl/#/best_practices/checklist).
 
 This repository is set up with Python versions:
 
-- 3.8
-- 3.9
-- 3.10
 - 3.11
 - 3.12
 
@@ -23,19 +20,23 @@ versions.
 
 ## Package management and dependencies
 
-You can use either pip or conda for installing dependencies and package management. This repository does not force you
-to use one or the other, as project requirements differ. For advice on what to use, please check [the relevant section
-of the
-guide](https://guide.esciencecenter.nl/#/best_practices/language_guides/python?id=dependencies-and-package-management).
+For installing the dependencies and package management, [micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) and [poetry](https://python-poetry.org/) have been used.
 
-- Runtime dependencies should be added to `pyproject.toml` in the `dependencies` list under `[project]`.
-- Development dependencies should be added to `pyproject.toml` in one of the lists under `[project.optional-dependencies]`.
+The dependencies are listed in the `pyproject.toml` file under the section `[tool.poetry.dependencies]` and `[tool.poetry.group.dev.dependencies]`.
 
 ## Packaging/One command install
 
-You can distribute your code using PyPI.
-[The guide](https://guide.esciencecenter.nl/#/best_practices/language_guides/python?id=building-and-packaging-code) can
-help you decide which tool to use for packaging.
+To create a new environment, use the micromamba:
+
+```console
+micromamba create -n rcx-tk poetry
+micromamba activate rcx-tk
+```
+To install all dependencies specified in the `pyproject.toml` file, use poetry:
+
+```console
+poetry install
+```
 
 ## Testing and code coverage
 
