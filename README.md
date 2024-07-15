@@ -16,6 +16,10 @@
 | Citation data consistency          | [![cffconvert](https://github.com/RECETOX/rcx-tk/actions/workflows/cffconvert.yml/badge.svg)](https://github.com/RECETOX/rcx-tk/actions/workflows/cffconvert.yml) |
 | SonarCloud                         | [![sonarcloud](https://github.com/RECETOX/rcx-tk/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/RECETOX/rcx-tk/actions/workflows/sonarcloud.yml) |
 | MarkDown link checker              | [![markdown-link-check](https://github.com/RECETOX/rcx-tk/actions/workflows/markdown-link-check.yml/badge.svg)](https://github.com/RECETOX/rcx-tk/actions/workflows/markdown-link-check.yml) |
+| **How to install**                 | &nbsp; |
+| pypi                               | [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/rcx-tk)](https://pypi.org/project/rcx-tk/) |
+| bioconda                           | [![Conda Platform](https://img.shields.io/conda/p/bioconda/rcx-tk)]() |
+
 
 ## How to use rcx_tk
 
