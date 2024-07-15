@@ -150,49 +150,35 @@ In a new terminal:
 # has the state of origin/main branch
 cd $(mktemp -d rcx_tk.XXXXXX)
 git clone git@github.com:RECETOX/rcx-tk .
-
-# make sure to have a recent version of pip and the publishing dependencies
-python -m pip install --upgrade pip
-python -m pip install .[publishing]
-
-# create the source distribution and the wheel
-python -m build
-
-# upload to test pypi instance (requires credentials)
-python -m twine upload --repository testpypi dist/*
 ```
 
-Visit
-[https://test.pypi.org/project/rcx_tk](https://test.pypi.org/project/rcx_tk)
-and verify that your package was uploaded successfully. Keep the terminal open, we'll need it later.
+Create and activate a new environment:
 
-In a new terminal, without an activated virtual environment or an env directory:
-
-```shell
-cd $(mktemp -d rcx_tk-test.XXXXXX)
-
-# prepare a clean virtual environment and activate it
-
+```console
 micromamba create rcx-tk-pypi
 micromamba activate rcx-tk-pypi
-
-# make sure to have a recent version of pip and setuptools
-python -m pip install --upgrade pip
-
-# install from test pypi instance:
-python -m pip -v install --no-cache-dir \
---index-url https://test.pypi.org/simple/ \
---extra-index-url https://pypi.org/simple rcx_tk
 ```
 
-Check that the package works as it should when installed from pypitest.
+Create an account on PypI.
 
-Then upload to pypi.org with:
+In the Account settings, find the API tokens section and click on "Add API token". Copy your token.
 
-```shell
-# Back to the first terminal,
-# FINAL STEP: upload to PyPI (requires credentials)
-python -m twine upload dist/*
+Add your API token to Poetry:
+
+```console
+poetry config pypi-token.pypi your-api-token
+```
+
+Build your project:
+
+```console
+poetry build
+```
+
+Publish your package to PyPI:
+
+```console
+poetry publish
 ```
 
 ### (3/3) GitHub
