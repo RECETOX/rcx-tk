@@ -155,7 +155,7 @@ git clone git@github.com:RECETOX/rcx-tk .
 Create and activate a new environment:
 
 ```console
-micromamba create rcx-tk-pypi
+micromamba create -n rcx-tk-pypi poetry
 micromamba activate rcx-tk-pypi
 ```
 
