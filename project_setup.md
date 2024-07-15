@@ -14,6 +14,10 @@ This repository is set up with Python versions:
 - 3.11
 - 3.12
 
+Add or remove Python versions based on project requirements. See [the
+guide](https://guide.esciencecenter.nl/#/best_practices/language_guides/python) for more information about Python
+versions.
+
 ## Package management and dependencies
 
 For installing the dependencies and package management, [micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) and [poetry](https://python-poetry.org/) have been used.
