@@ -40,7 +40,9 @@ cd rcx-tk
 python -m pip install .
 ```
 
-Upon installation, the tool can be run also using either the python3 or  poetry:
+The main functions are process_metadata_file and process_alkane_ri_file.
+
+The tool can be run also using command-line interface, either by the python3 or poetry:
 
 ```console
 python3 <path-to-__main.py__> --method='' <path-to-input-data> <path-to-output-data>
@@ -49,8 +51,6 @@ python3 <path-to-__main.py__> --method='' <path-to-input-data> <path-to-output-d
 ```console
 poetry run rcx_tk --method='' <file-path-to-input-data> <file-path-to-output-data>
 ```
-
-
 ## Documentation
 
 The project is documented [here](https://rcx-tk.readthedocs.io/en/latest/?badge=latest).
