@@ -158,8 +158,6 @@ def processed_dataframe() -> pd.DataFrame:
 
     return pd.DataFrame(data=d)
 
-
-
 @pytest.fixture
 def alkanes() -> pd.DataFrame:
     """Creates a dataframe corresponding to processed alkane file.
@@ -363,12 +361,16 @@ def test_separate_filename(file_name: str, expected: str):
     actual = separate_filename(file_name)
     assert actual == expected
 
-def test_validateInjectionOrder(processed_dataframe: pd.DataFrame):
-    """Tests whether injectionOrder is of integer type.
+@pytest.mark.parametrize("dataFrame, expected", [
+    [pd.DataFrame({"injectionOrder": [1,4,5]}), True],
+    [pd.DataFrame({"injectionOrder": ["1",None,5]}), False]
+])
+def test_validateInjectionOrder(dataFrame: pd.DataFrame, expected: bool):
+    """Tests the injection order validation function.
 
     Args:
-        processed_dataframe (pd.DataFrame): A processed metadata dataframe.
+        dataFrame (pd.DataFrame): A dataframe with injection order.
+        expected (bool): Whether it is of integer (True) or other data type (False)
     """
-    expected = True
-    actual = validateInjectionOrder(processed_dataframe)
+    actual = validateInjectionOrder(dataFrame)
     assert expected == actual

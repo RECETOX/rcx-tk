@@ -1,6 +1,7 @@
 import os
 import re
 from typing import Tuple
+from numpy import int64
 import pandas as pd
 
 
@@ -92,8 +93,11 @@ def validateInjectionOrder(df: pd.DataFrame) -> bool:
     Returns:
         bool: Whether the injectionOrder is integer.
     """
-    res = all(x.is_integer() for x in df['injectionOrder'])
-    return(res)
+    #res = all(x.is_integer() for x in df['injectionOrder'])
+    res = df['injectionOrder'].dtypes
+    if res == int64: return(True)
+    else: return(False)
+    
 
 def derive_additional_metadata(df: pd.DataFrame) -> pd.DataFrame:
     """Derives additional metadata columns.
