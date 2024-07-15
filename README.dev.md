@@ -19,7 +19,7 @@ poetry install
 A command line interface was also implemented using Click, so the package can be run by either using python3:
 
 ```console
-python3 <path-to-__main.py__> --method='' <path-to-input-data> <path-to-output-data>
+python3 -m rcx_tk --method='' <path-to-input-data> <path-to-output-data>
 ```
 
 or using poetry:
