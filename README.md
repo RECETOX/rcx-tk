@@ -37,7 +37,7 @@ To install rcx_tk from GitHub repository, do:
 ```console
 git clone git@github.com:RECETOX/rcx-tk.git
 cd rcx-tk
-python -m pip install .
+poetry install
 ```
 
 The main functions are process_metadata_file and process_alkane_ri_file.
