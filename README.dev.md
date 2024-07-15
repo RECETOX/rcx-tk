@@ -159,7 +159,7 @@ micromamba create -n rcx-tk-pypi poetry
 micromamba activate rcx-tk-pypi
 ```
 
-Create an account on PypI.
+Create an account on PyPI.
 
 In the Account settings, find the API tokens section and click on "Add API token". Copy your token.
 
