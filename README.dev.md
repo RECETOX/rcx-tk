@@ -2,26 +2,31 @@
 
 If you're looking for user documentation, go [here](README.md).
 
-## Development install
+## Package installation
 
-```shell
-# Create a virtual environment, e.g. with
-python -m venv env
+To create a new environment, use the micromamba:
 
-# activate virtual environment
-source env/bin/activate
+```console
+micromamba create rcx-tk
+micromamba activate rcx-tk
+```
+To install all dependencies specified in the `pyproject.toml` file, use poetry:
 
-# make sure to have a recent version of pip and setuptools
-python -m pip install --upgrade pip setuptools
-
-# (from the project root directory)
-# install rcx_tk as an editable package
-python -m pip install --no-cache-dir --editable .
-# install development dependencies
-python -m pip install --no-cache-dir --editable .[dev]
+```console
+poetry install
 ```
 
-Afterwards check that the install directory is present in the `PATH` environment variable.
+A command line interface was also implemented using Click, so the package can be run by either using python3:
+
+```console
+python3 <path-to-__main.py__> --method='' <path-to-input-data> <path-to-output-data>
+```
+
+or using poetry:
+
+```console
+poetry run rcx_tk --method='' <file-path-to-input-data> <file-path-to-output-data>
+```
 
 ## Running the tests
 

@@ -40,7 +40,11 @@ cd rcx-tk
 python -m pip install .
 ```
 
-Upon installation, the tool can be run also using the poetry:
+Upon installation, the tool can be run also using either the python3 or  poetry:
+
+```console
+python3 <path-to-__main.py__> --method='' <path-to-input-data> <path-to-output-data>
+```
 
 ```console
 poetry run rcx_tk --method='' <file-path-to-input-data> <file-path-to-output-data>
