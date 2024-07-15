@@ -40,9 +40,16 @@ poetry install
 
 ## Testing and code coverage
 
-- Tests are in the `tests` folder, in the `test_process_metadata_file.py` file.
+- Tests should be put in the `tests` folder.
+- The `tests` folder contains:
+  - Example tests that you should replace with your own meaningful tests (file: `test_my_module.py`)
 - The testing framework used is [PyTest](https://pytest.org)
+  - [PyTest introduction](https://pythontest.com/pytest-book/)
+  - PyTest is listed as a development dependency
+  - This is configured in `pyproject.toml`
 - The project uses [GitHub action workflows](https://docs.github.com/en/actions) to automatically run tests on GitHub infrastructure against multiple Python versions
+  - Workflows can be found in [`.github/workflows`](.github/workflows/)
+- [Relevant section in the guide](https://guide.esciencecenter.nl/#/best_practices/language_guides/python?id=testing)
 
 ## Documentation
 
