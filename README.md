@@ -49,7 +49,7 @@ The main functions are process_metadata_file and process_alkane_ri_file.
 The tool can be run also using command-line interface, either by the python3 or poetry:
 
 ```console
-python3 <path-to-__main.py__> --method='' <path-to-input-data> <path-to-output-data>
+python3 -m rcx_tk --method='' <path-to-input-data> <path-to-output-data>
 ```
 
 ```console
