@@ -229,7 +229,7 @@ def separate_filename(file_name: str) -> Tuple[str, str]:
     Returns:
         Tuple[str, str]: Splitted file_name.
     """
-    a, b = re.findall(r'(.*(?:\D|^))(\d+)', file_name)[0]
+    a, b = re.findall(r'^(.*?)(\d+)$', file_name)[0]
     return (a, b)
 
 def add_subject_identifier(file_name: str) -> str:
