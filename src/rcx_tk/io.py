@@ -31,6 +31,8 @@ def save_dataframe_as_tsv(df: pd.DataFrame, file_path: str, header: bool = True,
     Args:
         df (pd.DataFrame): The metadata dataframe.
         file_path (str): A path where the .TSV will be exported, containing the <fileName>.TSV.
+        header (bool): Whether to write the header or not.
+        index (bool): Whether to write the index or not.
 
     Raises:
         ValueError: Error if provided <fileName> is of a different format than TSV.

@@ -15,7 +15,9 @@ def process_alkane_file(file_path: str, out_path: str) -> None:
     save_dataframe_as_tsv(df, out_path)
 
 
-def process_alkanes(df: pd.DataFrame, columns_to_keep: list[str] = {"Carbon number": "carbon_number", "RT (min)": "rt"}) -> pd.DataFrame:
+def process_alkanes(
+    df: pd.DataFrame, columns_to_keep: list[str] = {"Carbon number": "carbon_number", "RT (min)": "rt"}
+) -> pd.DataFrame:
     """Process dataframe with alkanes to fit the msdial format.
 
     Args:
