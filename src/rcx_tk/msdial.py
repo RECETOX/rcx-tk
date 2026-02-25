@@ -19,7 +19,7 @@ def process_msdial_file(file_path: str, out_path: str) -> None:
 def process_msdial(df: pd.DataFrame, skip_rows: int = 3, metadata_cols: int = 28, index_col: str = "Alignment ID"):
     df.columns = df.iloc[skip_rows]
     df.set_index(index_col, inplace=True, drop=True)
-    data_matrix = df.loc[skip_rows:, df.columns[metadata_cols:]]
+    data_matrix = df.loc[skip_rows:, df.columns[metadata_cols:]] if skip_rows > 0 else df.loc[:, df.columns[metadata_cols:]]
 
     all_duplicates = find_all_duplicates(data_matrix)
     all_duplicates_idx = get_index(all_duplicates)
@@ -76,7 +76,7 @@ def find_clusters(all_duplicates):
 
 
 def get_index(all_duplicates):
-    all_duplicates_idx = all_duplicates.pop()
+    all_duplicates_idx = all_duplicates[0]
     for idx in all_duplicates:
         all_duplicates_idx = all_duplicates_idx.union(idx)
     return all_duplicates_idx
