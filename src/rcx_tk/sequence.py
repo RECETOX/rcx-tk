@@ -32,6 +32,7 @@ def process_sequence(df: pd.DataFrame) -> pd.DataFrame:
     df = rearrange_columns(df)
     validate_filenames_column(df)
     validate_injection_order(df)
+    df["sampleName"] = df["File name"].apply(replace_spaces)
     df = derive_additional_metadata(df)
     df = cleanup(df)
     return df
@@ -73,7 +74,6 @@ def derive_additional_metadata(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: The processed dataframe.
     """
-    df["sampleName"] = df["File name"].apply(replace_spaces)
     df["sequenceIdentifier"] = df["File name"].apply(add_sequence_identifier)
     df["subjectIdentifier"] = df["File name"].apply(add_subject_identifier)
     df["localOrder"] = df["File name"].apply(add_local_order)
