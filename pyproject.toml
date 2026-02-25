@@ -2,7 +2,11 @@
 name = "rcx-tk"
 version = "0.2.0"
 description = "This package adjusts and cleans the metadata file provided by a user."
-authors = ["Zargham Ahmad <zargham.ahmad@recetox.muni.cz>" , "Kristina Gomoryova <kristina.gomoryova@recetox.muni.cz>"]
+authors = [
+    "Zargham Ahmad <zargham.ahmad@recetox.muni.cz>" ,
+    "Kristina Gomoryova <kristina.gomoryova@recetox.muni.cz>",
+    "Helge Hecht <helge.hecht@recetox.muni.cz>"
+]
 license = "MIT"
 readme = "README.md"
 keywords = ["metadata", "alkanes", "metabolomics"]
