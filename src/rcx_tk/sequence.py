@@ -1,4 +1,3 @@
-import re
 from typing import Tuple
 import pandas as pd
 from numpy import int64
@@ -142,7 +141,7 @@ def add_sequence_identifier(file_name: str) -> str:
 
 
 def separate_filename(file_name: str) -> Tuple[str, str]:
-    """Splits the file_name based on a regex.
+    """Split a filename into the non-numeric prefix and trailing numeric suffix.
 
     Args:
         file_name (str): The filename.
