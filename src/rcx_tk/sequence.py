@@ -150,7 +150,7 @@ def separate_filename(file_name: str) -> Tuple[str, str]:
     Returns:
         Tuple[str, str]: Splitted file_name.
     """
-    a, b = re.findall(r"^(.*?)(\d+)$", file_name)[0]
+    a, b = re.findall(r"^(.*\D)(\d+)$", file_name)[0]
     return (a, b)
 
 
@@ -163,6 +163,6 @@ def add_subject_identifier(file_name: str) -> str:
     Returns:
         str: The subjectIdentifier value.
     """
-    _, b, _ = re.findall(r"(\d+_)(.*)(_\d+)", file_name)[0]
+    _, b, _ = re.findall(r"^(\d+_)(.*?)(_\d+)$", file_name)[0]
     b = b.strip()
     return b
