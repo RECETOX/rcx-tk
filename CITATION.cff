@@ -8,7 +8,7 @@ authors:
     given-names: Zargham
     orcid: "https://orcid.org/0000-0000-0000-0000"
 date-released: 2024-06-19
-version: "0.1.0"
+version: "0.2.0"
 repository-code: "https://github.com/RECETOX/rcx-tk"
 keywords:
   - rcx
