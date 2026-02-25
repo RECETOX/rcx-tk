@@ -1,4 +1,3 @@
-import re
 from typing import Tuple
 import pandas as pd
 from numpy import int64
@@ -142,7 +141,7 @@ def add_sequence_identifier(file_name: str) -> str:
 
 
 def separate_filename(file_name: str) -> Tuple[str, str]:
-    """Splits the file_name based on a regex.
+    """Split a filename into the non-numeric prefix and trailing numeric suffix.
 
     Args:
         file_name (str): The filename.
@@ -150,8 +149,13 @@ def separate_filename(file_name: str) -> Tuple[str, str]:
     Returns:
         Tuple[str, str]: Splitted file_name.
     """
-    a, b = re.findall(r"^(.*?)(\d+)$", file_name)[0]
-    return (a, b)
+    suffix = file_name.rstrip("0123456789")
+    digits = file_name[len(suffix) :]
+
+    if not digits:
+        raise ValueError("Filename must end with one or more digits.")
+
+    return (suffix, digits)
 
 
 def add_subject_identifier(file_name: str) -> str:
@@ -163,6 +167,21 @@ def add_subject_identifier(file_name: str) -> str:
     Returns:
         str: The subjectIdentifier value.
     """
-    _, b, _ = re.findall(r"(\d+_)(.*)(_\d+)", file_name)[0]
-    b = b.strip()
-    return b
+    _, trailing_digits = separate_filename(file_name)
+    prefix = file_name[: len(file_name) - len(trailing_digits)]
+
+    if not prefix.endswith("_"):
+        raise ValueError("Filename must contain an underscore before trailing digits.")
+
+    core = prefix[:-1]
+    first_underscore = core.find("_")
+
+    if first_underscore <= 0:
+        raise ValueError("Filename must contain leading digits followed by an underscore.")
+
+    leading = core[:first_underscore]
+    if not leading.isdigit():
+        raise ValueError("Filename must start with one or more digits.")
+
+    subject_identifier = core[first_underscore + 1 :].strip()
+    return subject_identifier
