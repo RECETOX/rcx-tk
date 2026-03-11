@@ -1,19 +1,15 @@
 # YAML 1.2
 ---
-cff-version: "1.2.0"
-title: "rcx_tk"
-authors:
-  -
-    family-names: Ahmad
-    given-names: Zargham
-    orcid: "https://orcid.org/0000-0000-0000-0000"
-date-released: 2024-06-19
-version: "0.2.0"
-repository-code: "https://github.com/RECETOX/rcx-tk"
-keywords:
-  - rcx
-  - process metadata
-  - alkanes
-  - metabolomics
+cff-version: 1.1.0
 message: "If you use this software, please cite it using these metadata."
-license: MIT
+title: "rcx_tk"
+version: 0.2.0
+date-released: 2026-03-11
+authors:
+  - family-names: Ahmad
+    given-names: Zargham
+  - family-names: Gomoryova
+    given-names: Kristina
+  - family-names: Hecht
+    given-names: Helge
+    orcid: https://orcid.org/0000-0001-6744-996X
