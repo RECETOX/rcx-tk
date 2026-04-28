@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-04-28
+### Changed
+- fixed bug in reading msdial files which was due to wring reading of the header in tabular format [#44](https://github.com/RECETOX/rcx-tk/pull/44)
+
 ## [0.1.0] - 2024-07-15
 
 ### Added
