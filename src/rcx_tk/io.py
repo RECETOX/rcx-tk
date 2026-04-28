@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 
-def read_file(file_path: str) -> pd.DataFrame:
+def read_file(file_path: str, **kwargs) -> pd.DataFrame:
     """Imports the metadata file to pandas dataframe.
 
     Args:
@@ -16,16 +16,16 @@ def read_file(file_path: str) -> pd.DataFrame:
     """
     file_extension = os.path.splitext(file_path)[1].lower()
     if file_extension == ".csv":
-        return pd.read_csv(file_path, encoding="UTF-8")
+        return pd.read_csv(file_path, encoding="UTF-8", **kwargs)
     elif file_extension in [".xls", ".xlsx"]:
-        return pd.read_excel(file_path)
-    elif file_extension in [".tsv", ".txt"]:
-        return pd.read_csv(file_path, sep="\t")
+        return pd.read_excel(file_path, **kwargs)
+    elif file_extension in [".tsv", ".txt", ".tabular"]:
+        return pd.read_csv(file_path, sep="\t", **kwargs)
     else:
         raise ValueError("Unsupported file format. Please provide a CSV, Excel, or TSV file.")
 
 
-def save_dataframe_as_tsv(df: pd.DataFrame, file_path: str, header: bool = True, index: bool = False) -> None:
+def save_dataframe_as_tsv(df: pd.DataFrame, file_path: str, header: bool = True, index: bool = False, mode: str = 'w') -> None:
     """Saves the dataframe as a TSV file.
 
     Args:
@@ -39,4 +39,4 @@ def save_dataframe_as_tsv(df: pd.DataFrame, file_path: str, header: bool = True,
     """
     if os.path.splitext(file_path)[1] != ".tsv":
         raise ValueError("Unsupported file format. Please point to a TSV file.")
-    df.to_csv(file_path, sep="\t", index=index, header=header)
+    df.to_csv(file_path, sep="\t", index=index, header=header, mode=mode)
