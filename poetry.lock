@@ -2179,18 +2179,21 @@ platformdirs = ">=3.9.1,<5"
 
 [[package]]
 name = "wheel"
-version = "0.43.0"
-description = "A built-package format for Python"
+version = "0.46.3"
+description = "Command line tool for manipulating wheel files"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "wheel-0.43.0-py3-none-any.whl", hash = "sha256:55c570405f142630c6b9f72fe09d9b67cf1477fcf543ae5b8dcb1f5b7377da81"},
-    {file = "wheel-0.43.0.tar.gz", hash = "sha256:465ef92c69fa5c5da2d1cf8ac40559a8c940886afcef87dcf14b9470862f1d85"},
+    {file = "wheel-0.46.3-py3-none-any.whl", hash = "sha256:4b399d56c9d9338230118d705d9737a2a468ccca63d5e813e2a4fc7815d8bc4d"},
+    {file = "wheel-0.46.3.tar.gz", hash = "sha256:e3e79874b07d776c40bd6033f8ddf76a7dad46a7b8aa1b2787a83083519a1803"},
 ]
 
+[package.dependencies]
+packaging = ">=24.0"
+
 [package.extras]
-test = ["pytest (>=6.0.0)", "setuptools (>=65)"]
+test = ["pytest (>=6.0.0)", "setuptools (>=77)"]
 
 [[package]]
 name = "zipp"
