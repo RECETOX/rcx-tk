@@ -1,6 +1,5 @@
 import filecmp
 import os
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -90,6 +89,7 @@ def test_process_msdial_merges_duplicate_alignments():
 
 
 def test_integration(tmpdir):
+    """Test on real MSDial outputs."""
     inpath = os.path.join("tests", "test_data", "msdial_katka.tsv")
     outpath = tmpdir / "result.tsv"
     msdial.process_msdial_file(inpath, outpath)

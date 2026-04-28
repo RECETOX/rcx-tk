@@ -7,6 +7,7 @@ def read_file(file_path: str, **kwargs) -> pd.DataFrame:
 
     Args:
         file_path (str): The path to the input data.
+        kwargs: Variable keyword arguments to pass to the pd.read_ style functions
 
     Raises:
         ValueError: Error if any file format except for csv, xls, xlsx, txt or tsv is provided.
@@ -25,7 +26,9 @@ def read_file(file_path: str, **kwargs) -> pd.DataFrame:
         raise ValueError("Unsupported file format. Please provide a CSV, Excel, or TSV file.")
 
 
-def save_dataframe_as_tsv(df: pd.DataFrame, file_path: str, header: bool = True, index: bool = False, mode: str = 'w') -> None:
+def save_dataframe_as_tsv(
+    df: pd.DataFrame, file_path: str, header: bool = True, index: bool = False, mode: str = "w"
+) -> None:
     """Saves the dataframe as a TSV file.
 
     Args:
@@ -33,6 +36,7 @@ def save_dataframe_as_tsv(df: pd.DataFrame, file_path: str, header: bool = True,
         file_path (str): A path where the .TSV will be exported, containing the <fileName>.TSV.
         header (bool): Whether to write the header or not.
         index (bool): Whether to write the index or not.
+        mode (str): Mode in which to open the file - one of w or a.
 
     Raises:
         ValueError: Error if provided <fileName> is of a different format than TSV.
