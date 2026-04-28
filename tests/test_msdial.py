@@ -1,3 +1,5 @@
+import filecmp
+import os
 import numpy as np
 import pandas as pd
 import pytest
@@ -64,15 +66,17 @@ def test_get_index_unions_all_duplicate_groups(all_duplicates):
 def test_process_msdial_merges_duplicate_alignments():
     """Aggregate duplicated alignments and keep non-duplicate rows unchanged."""
     raw = pd.DataFrame(
-        [
-            ["Alignment ID", "M1", "M2", "M3", 101, 102],
-            [1, 10.0, 20.0, 30.0, 5.0, 0.0],
-            [2, 30.0, 40.0, 50.0, 5.0, 7.0],
-            [3, 50.0, 60.0, 70.0, 1.0, 8.0],
-        ]
+        {
+            "M1": [10.0, 30.0, 50.0],
+            "M2": [20.0, 40.0, 60.0],
+            "M3": [30.0, 50.0, 70.0],
+            101: [5.0, 5.0, 1.0],
+            102: [0.0, 7.0, 8.0],
+        },
+        index=pd.Index([1, 2, 3], name="Alignment ID"),
     )
 
-    actual = msdial.process_msdial(raw, skip_rows=0, metadata_cols=3, index_col="Alignment ID")
+    actual = msdial.process_msdial(raw, metadata_cols=3, index_col="Alignment ID")
 
     assert 1 not in actual.index
     assert 2 not in actual.index
@@ -84,35 +88,11 @@ def test_process_msdial_merges_duplicate_alignments():
     assert actual.loc["1,2", 102] == 7.0
 
 
-def test_process_msdial_file_calls_io_helpers(monkeypatch):
-    """Read input, process DataFrame, and write TSV with expected options."""
-    input_df = pd.DataFrame({"x": [1]})
-    processed_df = pd.DataFrame({"y": [2]})
-    observed = {}
+def test_integration(tmpdir):
+    """Test on real MSDial outputs."""
+    inpath = os.path.join("tests", "test_data", "msdial_katka.tsv")
+    outpath = tmpdir / "result.tsv"
+    msdial.process_msdial_file(inpath, outpath)
 
-    def fake_read_file(file_path):
-        observed["read_path"] = file_path
-        return input_df
-
-    def fake_process_msdial(df):
-        observed["processed_input"] = df
-        return processed_df
-
-    def fake_save_dataframe_as_tsv(df, out_path, header, index):
-        observed["saved_df"] = df
-        observed["out_path"] = out_path
-        observed["header"] = header
-        observed["index"] = index
-
-    monkeypatch.setattr(msdial, "read_file", fake_read_file)
-    monkeypatch.setattr(msdial, "process_msdial", fake_process_msdial)
-    monkeypatch.setattr(msdial, "save_dataframe_as_tsv", fake_save_dataframe_as_tsv)
-
-    msdial.process_msdial_file("input.tsv", "output.tsv")
-
-    assert observed["read_path"] == "input.tsv"
-    assert observed["processed_input"] is input_df
-    assert observed["saved_df"] is processed_df
-    assert observed["out_path"] == "output.tsv"
-    assert observed["header"] is False
-    assert observed["index"] is True
+    expected = os.path.join("tests", "test_data", "msdial_katka_corrected.tsv")
+    assert filecmp.cmp(outpath, expected)

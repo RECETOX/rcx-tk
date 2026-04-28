@@ -6,10 +6,6 @@ from rcx_tk.io import read_file
 from rcx_tk.io import save_dataframe_as_tsv
 from rcx_tk.utils import concat_str
 
-skip_rows = 3
-metadata_cols = 28
-index_col = "Alignment ID"
-
 
 def process_msdial_file(file_path: str, out_path: str) -> None:
     """Process MSDial output file to group duplicate alignments.
@@ -18,30 +14,28 @@ def process_msdial_file(file_path: str, out_path: str) -> None:
         file_path (str): Input file path.
         out_path (str): Output file path.
     """
-    df = read_file(file_path)
+    df = read_file(file_path, header=4, index_col=0)
     result = process_msdial(df)
-    save_dataframe_as_tsv(result, out_path, header=False, index=True)
+
+    with open(file_path) as infile:
+        with open(out_path, mode="w+") as outfile:
+            outfile.writelines(infile.readlines(4))
+
+    save_dataframe_as_tsv(result, out_path, index=True, mode="a")
 
 
-def process_msdial(
-    df: pd.DataFrame, skip_rows: int = 3, metadata_cols: int = 28, index_col: str = "Alignment ID"
-) -> pd.DataFrame:
+def process_msdial(df: pd.DataFrame, metadata_cols: int = 27, index_col: str = "Alignment ID") -> pd.DataFrame:
     """Function to process a DataFrame of MSDial results to group duplicate alignments.
 
     Args:
         df (pd.DataFrame): Dataframe with MSDial results.
-        skip_rows (int, optional): Number of rows to skip. Defaults to 3.
         metadata_cols (int, optional): Number of columns containing data prior to feature abundances. Defaults to 28.
         index_col (str, optional): Column to denote the index. Defaults to "Alignment ID".
 
     Returns:
         pd.DataFrame: DataFrame with clustered alignment ids.
     """
-    df.columns = df.iloc[skip_rows]
-    df.set_index(index_col, inplace=True, drop=True)
-    data_matrix = (
-        df.loc[skip_rows:, df.columns[metadata_cols:]] if skip_rows > 0 else df.loc[:, df.columns[metadata_cols:]]
-    )
+    data_matrix = df.loc[:, df.columns[metadata_cols:]]
 
     all_duplicates = find_all_duplicates(data_matrix)
     all_duplicates_idx = union(all_duplicates)
