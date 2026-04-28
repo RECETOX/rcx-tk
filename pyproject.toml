@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rcx-tk"
-version = "0.2.0"
+version = "0.2.1"
 description = "This package adjusts and cleans the metadata file provided by a user."
 authors = [
     "Zargham Ahmad <zargham.ahmad@recetox.muni.cz>" ,
@@ -129,8 +129,8 @@ search = '__version__ = "{current_version}"'
 replace = '__version__ = "{new_version}"'
 
 [tool.poetry_bumpversion.file."CITATION.cff"]
-search = 'version: "{current_version}"'
-replace = 'version: "{new_version}"'
+search = 'version: {current_version}'
+replace = 'version: {new_version}'
 
 [tool.poetry_bumpversion.file."docs/conf.py"]
 search = 'version = "{current_version}"'
