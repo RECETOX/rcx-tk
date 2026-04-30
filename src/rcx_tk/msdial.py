@@ -1,6 +1,5 @@
 import itertools
 from collections.abc import Callable
-import os
 import numpy as np
 import pandas as pd
 from rcx_tk.io import read_file
