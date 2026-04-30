@@ -19,7 +19,7 @@ def process_msdial_file(file_path: str, out_path: str) -> None:
 
     with open(file_path) as infile:
         with open(out_path, mode="w+") as outfile:
-            outfile.writelines(infile.readlines(4))
+            [outfile.write(infile.readline()) for _ in range(4)]
 
     save_dataframe_as_tsv(result, out_path, index=True, mode="a")
 
