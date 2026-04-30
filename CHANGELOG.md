@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.2.2] - 2026-04-30
+### Changed
+- fixed bug in writing msdial corrected outputs where first skipped lines were not written properly. [#47](https://github.com/RECETOX/rcx-tk/pull/47)
 
 ## [0.2.1] - 2026-04-28
 ### Changed
