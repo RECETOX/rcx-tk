@@ -1,5 +1,6 @@
 import itertools
 from collections.abc import Callable
+import os
 import numpy as np
 import pandas as pd
 from rcx_tk.io import read_file
@@ -19,7 +20,8 @@ def process_msdial_file(file_path: str, out_path: str) -> None:
 
     with open(file_path) as infile:
         with open(out_path, mode="w+") as outfile:
-            outfile.writelines(infile.readlines(4))
+            for i in range(4):
+                outfile.write(infile.readline())
 
     save_dataframe_as_tsv(result, out_path, index=True, mode="a")
 
