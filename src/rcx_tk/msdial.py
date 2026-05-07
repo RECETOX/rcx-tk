@@ -41,9 +41,8 @@ def process_msdial(df: pd.DataFrame, metadata_cols: int = 27, index_col: str = "
     all_duplicates_idx = union(all_duplicates)
 
     alignments_with_duplicates = df.loc[all_duplicates_idx]
-    df.drop(all_duplicates_idx, inplace=True)
 
-    clusters = find_clusters(all_duplicates)
+    clusters = refine(find_clusters(all_duplicates))
 
     metadata_columns = list(df.columns[:metadata_cols])
     mean_columns = metadata_columns[:3]
@@ -58,9 +57,13 @@ def process_msdial(df: pd.DataFrame, metadata_cols: int = 27, index_col: str = "
 
     summary_df = pd.DataFrame.from_dict(results, orient="index", columns=df.columns)
     summary_df.index.name = index_col
+    df.drop(all_duplicates_idx, inplace=True)
     everything = pd.concat([df, summary_df])
     return everything
 
+def refine(clusters : list[pd.Index]) -> list[pd.Index]:
+
+    return clusters
 
 def aggregations(
     mean_columns: list[str], concat_columns: list[str], abundance_columns: list[str]
@@ -97,17 +100,30 @@ def find_clusters(all_duplicates: list[pd.Index]) -> list[pd.Index]:
     Returns:
         list[pd.Index]: Clusters of connected duplicates.
     """
-    clusters = []
+    clusters: list[pd.Index] = []
     while all_duplicates:
         current = all_duplicates.pop()
-        added = False
-        for cluster_idx in range(len(clusters)):
-            if any(current.isin(clusters[cluster_idx])):
-                clusters[cluster_idx] = clusters[cluster_idx].union(current)
-                added = True
-                break
-        if not added:
+        
+        matches = [
+            cluster_idx
+            for cluster_idx, cluster in enumerate(clusters)
+            if current.isin(cluster).any()
+        ]
+        
+        if len(matches) == 0:
             clusters.append(current)
+        elif len(matches) == 1:
+            match = matches[0]
+            if clusters[match].equals(current):
+                continue
+            else:
+                clusters[match] = clusters[match].union(current)
+        else:
+            merging = [clusters[match] for match in matches]
+            merging.append(current)
+            clusters[matches[0]] = union(merging)
+            del clusters[matches[1]]
+
     return clusters
 
 
