@@ -15,7 +15,8 @@ def process_msdial_file(file_path: str, out_path: str) -> None:
         out_path (str): Output file path.
     """
     df = read_file(file_path, header=4, index_col=0)
-    result = process_msdial(df)
+    n_samples = get_n_samples(file_path)
+    result = process_msdial(df, n_samples)
 
     with open(file_path) as infile:
         with open(out_path, mode="w+") as outfile:
@@ -23,8 +24,15 @@ def process_msdial_file(file_path: str, out_path: str) -> None:
 
     save_dataframe_as_tsv(result, out_path, index=True, mode="a")
 
+def get_n_samples(file_path: str) -> int:
+    with open(file_path) as file:
+        first = file.readline().strip('\t').split('\t')
+    
+    n_samples = len(list(filter(lambda x: x != 'NA', first))[1:-1])
+    return n_samples
 
-def process_msdial(df: pd.DataFrame, metadata_cols: int = 27, index_col: str = "Alignment ID") -> pd.DataFrame:
+
+def process_msdial(df: pd.DataFrame, n_samples: int, metadata_cols: int = 27, index_col: str = "Alignment ID") -> pd.DataFrame:
     """Function to process a DataFrame of MSDial results to group duplicate alignments.
 
     Args:
@@ -35,19 +43,19 @@ def process_msdial(df: pd.DataFrame, metadata_cols: int = 27, index_col: str = "
     Returns:
         pd.DataFrame: DataFrame with clustered alignment ids.
     """
-    data_matrix = df.loc[:, df.columns[metadata_cols:]]
+    data_matrix = df.loc[:, df.columns[metadata_cols:n_samples+metadata_cols]]
 
     all_duplicates = find_all_duplicates(data_matrix)
     all_duplicates_idx = union(all_duplicates)
 
     alignments_with_duplicates = df.loc[all_duplicates_idx]
 
-    clusters = refine(find_clusters(all_duplicates))
-
     metadata_columns = list(df.columns[:metadata_cols])
     mean_columns = metadata_columns[:3]
     concat_columns = metadata_columns[3:]
     abundance_columns = list(df.columns[metadata_cols:])
+
+    clusters = refine(find_clusters(all_duplicates), df[metadata_columns])
 
     aggregate_functions = aggregations(mean_columns, concat_columns, abundance_columns)
 
@@ -61,9 +69,16 @@ def process_msdial(df: pd.DataFrame, metadata_cols: int = 27, index_col: str = "
     everything = pd.concat([df, summary_df])
     return everything
 
-def refine(clusters : list[pd.Index]) -> list[pd.Index]:
+def refine(clusters : list[pd.Index], metadata: pd.DataFrame) -> list[pd.Index]:
+    refined_clusters: list[pd.Index] = []
+    for cluster in clusters:
+        cluster_metadata = metadata.loc[cluster].sort_values(by='Quant mass')
+        mz_tols = 10e-06 * cluster_metadata['Quant mass']
+        cluster_metadata['subcluster'] = np.cumsum(cluster_metadata['Quant mass'].diff().fillna(0).abs() > mz_tols)
+        subclusters = list(cluster_metadata.groupby(by='subcluster').groups.values())
+        refined_clusters.extend(subclusters)
 
-    return clusters
+    return refined_clusters
 
 def aggregations(
     mean_columns: list[str], concat_columns: list[str], abundance_columns: list[str]

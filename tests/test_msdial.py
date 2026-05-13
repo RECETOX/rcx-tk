@@ -88,11 +88,12 @@ def test_process_msdial_merges_duplicate_alignments():
     assert actual.loc["1,2", 102] == 7.0
 
 
-def test_integration(tmpdir):
+@pytest.mark.parametrize("filename", ["Area_1_20264201155", "msdial_katka"])
+def test_integration(filename, tmpdir):
     """Test on real MSDial outputs."""
-    inpath = os.path.join("tests", "test_data", "msdial_katka.tsv")
+    inpath = os.path.join("tests", "test_data", f'{filename}.tsv')
     outpath = tmpdir / "result.tsv"
     msdial.process_msdial_file(inpath, outpath)
 
-    expected = os.path.join("tests", "test_data", "msdial_katka_corrected.tsv")
+    expected = os.path.join("tests", "test_data", f"{filename}_corrected.tsv")
     assert filecmp.cmp(outpath, expected)
