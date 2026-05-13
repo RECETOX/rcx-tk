@@ -95,4 +95,6 @@ def test_integration(filename, tmpdir):
     msdial.process_msdial_file(inpath, outpath, 5)
 
     expected = os.path.join("tests", "test_data", f"{filename}_corrected.tsv")
-    assert np.abs(os.stat(outpath).st_size - os.stat(expected).st_size < 100)
+    actual_size = os.stat(outpath).st_size
+    expected_size = os.stat(expected).st_size
+    assert np.abs(actual_size - expected_size) < 100

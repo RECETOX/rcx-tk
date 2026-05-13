@@ -21,7 +21,7 @@ def process_msdial_file(file_path: str, out_path: str, mz_tol_ppm: int) -> None:
 
     with open(file_path) as infile:
         with open(out_path, mode="w+") as outfile:
-            [outfile.write(infile.readline()) for _ in range(4)]
+            [outfile.write(infile.readline().strip('\n').rstrip('\tNA')+'\n') for _ in range(4)]
 
     save_dataframe_as_tsv(result, out_path, index=True, mode="a")
 
@@ -51,13 +51,14 @@ def process_msdial(
         df (pd.DataFrame): Dataframe with MSDial results.
         n_samples (int): Number of samples - required to determine number of intensity cols in df.
         mz_tol_ppm (int): m/z tolerance in ppm to use for splitting clustered alignments.
-        metadata_cols (int, optional): Number of columns containing data prior to feature abundances. Defaults to 28.
+        metadata_cols (int, optional): Number of columns containing data prior to feature abundances. Defaults to 27.
         index_col (str, optional): Column to denote the index. Defaults to "Alignment ID".
 
     Returns:
         pd.DataFrame: DataFrame with clustered alignment ids.
     """
-    data_matrix = df.loc[:, df.columns[metadata_cols : n_samples + metadata_cols]]
+    df = df.loc[:, df.columns[: n_samples + metadata_cols]]
+    data_matrix = df.loc[:, df.columns[metadata_cols:]]
 
     all_duplicates = find_all_duplicates(data_matrix)
     all_duplicates_idx = union(all_duplicates)
