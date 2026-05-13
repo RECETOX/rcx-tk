@@ -40,4 +40,4 @@ def concat_str(value: Any) -> str:
     Returns:
         str: Joined result string.
     """
-    return ",".join(map(str, value))
+    return ";".join(map(str, value))
