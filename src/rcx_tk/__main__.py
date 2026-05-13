@@ -15,7 +15,7 @@ def main():
 
 
 @main.command("sequence")
-@click.argument("file_path", type=click.Path(exists=True))
+@click.argument("file_path", type=click.Path())
 @click.argument("out_path", type=click.Path())
 def sequence(file_path: str, out_path: str) -> None:
     """Process a sequence metadata file.
@@ -37,7 +37,7 @@ def sequence(file_path: str, out_path: str) -> None:
 
 
 @main.command("alkanes")
-@click.argument("file_path", type=click.Path(exists=True))
+@click.argument("file_path", type=click.Path())
 @click.argument("out_path", type=click.Path())
 def alkanes(file_path: str, out_path: str) -> None:
     """Process an alkane retention index file.
@@ -54,7 +54,7 @@ def alkanes(file_path: str, out_path: str) -> None:
 
 
 @main.command("msdial")
-@click.argument("file_path", type=click.Path(exists=True))
+@click.argument("file_path", type=click.Path())
 @click.argument("out_path", type=click.Path())
 @click.argument("mz_tol_ppm", required=False, default=5, type=int)
 def msdial(file_path: str, out_path: str, mz_tol_ppm: int) -> None:
