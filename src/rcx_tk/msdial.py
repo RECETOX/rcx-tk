@@ -15,7 +15,7 @@ def process_msdial_file(file_path: str, out_path: str, mz_tol_ppm: int) -> None:
         out_path (str): Output file path.
         mz_tol_ppm (int): m/z tolerance in ppm to use for splitting clustered alignments.
     """
-    df = read_file(file_path, header=4, index_col=0)
+    df = read_file(file_path, header=4, index_col=0, low_memory=False)
     n_samples = get_n_samples(file_path)
     result = process_msdial(df, n_samples, mz_tol_ppm)
 
