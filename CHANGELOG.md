@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- changed join char for string cols in msdial method from , to ;
+
 ## [0.3.0] - 2026-04-30
 ### Changed
 - changed behaviour in clustering for msdial that clusters are now refined and split based on mz tolerance [#48](https://github.com/RECETOX/rcx-tk/pull/48)
