@@ -21,7 +21,9 @@ def process_msdial_file(file_path: str, out_path: str, mz_tol_ppm: int) -> None:
 
     with open(file_path) as infile:
         with open(out_path, mode="w+") as outfile:
-            [outfile.write(infile.readline().strip('\n').rstrip('\tNA')+'\n') for _ in range(4)]
+            [outfile.write(infile.readline().strip('\n').rstrip('\tNA')+'\n') for _ in range(3)]
+            last = infile.readline()
+            outfile.write(last.rstrip('\n').rstrip('\tStdev').rstrip('\tAverage') + '\n')
 
     save_dataframe_as_tsv(result, out_path, index=True, mode="a")
 
@@ -57,7 +59,7 @@ def process_msdial(
     Returns:
         pd.DataFrame: DataFrame with clustered alignment ids.
     """
-    df = df.loc[:, df.columns[: n_samples + metadata_cols]]
+    df = df.drop(columns =df.columns[n_samples + metadata_cols:])
     data_matrix = df.loc[:, df.columns[metadata_cols:]]
 
     all_duplicates = find_all_duplicates(data_matrix)
