@@ -79,12 +79,12 @@ def test_process_msdial_merges_duplicate_alignments():
 
     assert 1 not in actual.index
     assert 2 not in actual.index
-    assert "1,2" in actual.index
-    assert actual.loc["1,2", "M1"] == 20.0
-    assert actual.loc["1,2", "M2"] == 30.0
-    assert actual.loc["1,2", "Quant mass"] == 30.0
-    assert actual.loc["1,2", 101] == 5.0
-    assert actual.loc["1,2", 102] == 7.0
+    assert "1;2" in actual.index
+    assert actual.loc["1;2", "M1"] == 20.0
+    assert actual.loc["1;2", "M2"] == 30.0
+    assert actual.loc["1;2", "Quant mass"] == 30.0
+    assert actual.loc["1;2", 101] == 5.0
+    assert actual.loc["1;2", 102] == 7.0
 
 
 @pytest.mark.parametrize("filename", ["msdial_katka"])
