@@ -16,36 +16,29 @@ To install all dependencies specified in the `pyproject.toml` file, use poetry:
 poetry install
 ```
 
-A command line interface was also implemented using Click, so the package can be run by either using python3:
+A command line interface was also implemented using Click with subcommands for each processing method. The package can be run using:
 
 ```console
-python3 -m rcx_tk --method='' <path-to-input-data> <path-to-output-data>
+rcx_tk sequence <input-file> <output-file>
+rcx_tk alkanes <input-file> <output-file>
+rcx_tk msdial <input-file> <output-file> [mz_tol_ppm]
 ```
 
-or using poetry:
+Or via poetry:
 
 ```console
-poetry run rcx_tk --method='' <file-path-to-input-data> <file-path-to-output-data>
+poetry run rcx_tk sequence <input-file> <output-file>
+poetry run rcx_tk alkanes <input-file> <output-file>
+poetry run rcx_tk msdial <input-file> <output-file> [mz_tol_ppm]
 ```
 
 ## Running the tests
 
-There are two ways to run tests.
-
-The first way requires an activated virtual environment with the development tools installed:
+To run the tests, use pytest with an activated virtual environment that has the development tools installed:
 
 ```shell
 pytest -v
 ```
-
-The second is to use `tox`, which can be installed separately (e.g. with `pip install tox`), i.e. not necessarily inside the virtual environment you use for installing `rcx_tk`, but then builds the necessary virtual environments itself by simply running:
-
-```shell
-tox
-```
-
-Testing with `tox` allows for keeping the testing environment separate from your development environment.
-The development environment will typically accumulate (old) packages during development that interfere with testing; this problem is avoided by testing with `tox`.
 
 ### Test coverage
 
