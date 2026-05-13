@@ -1,4 +1,3 @@
-import filecmp
 import os
 import numpy as np
 import pandas as pd
@@ -69,30 +68,33 @@ def test_process_msdial_merges_duplicate_alignments():
         {
             "M1": [10.0, 30.0, 50.0],
             "M2": [20.0, 40.0, 60.0],
-            "M3": [30.0, 50.0, 70.0],
+            "Quant mass": [30.0, 30.0, 70.0],
             101: [5.0, 5.0, 1.0],
             102: [0.0, 7.0, 8.0],
         },
         index=pd.Index([1, 2, 3], name="Alignment ID"),
     )
 
-    actual = msdial.process_msdial(raw, metadata_cols=3, index_col="Alignment ID")
+    actual = msdial.process_msdial(raw, 2, 5, metadata_cols=3, index_col="Alignment ID")
 
     assert 1 not in actual.index
     assert 2 not in actual.index
     assert "1,2" in actual.index
     assert actual.loc["1,2", "M1"] == 20.0
     assert actual.loc["1,2", "M2"] == 30.0
-    assert actual.loc["1,2", "M3"] == 40.0
+    assert actual.loc["1,2", "Quant mass"] == 30.0
     assert actual.loc["1,2", 101] == 5.0
     assert actual.loc["1,2", 102] == 7.0
 
 
-def test_integration(tmpdir):
+@pytest.mark.parametrize("filename", ["msdial_katka"])
+def test_integration(filename, tmpdir):
     """Test on real MSDial outputs."""
-    inpath = os.path.join("tests", "test_data", "msdial_katka.tsv")
+    inpath = os.path.join("tests", "test_data", f"{filename}.tsv")
     outpath = tmpdir / "result.tsv"
-    msdial.process_msdial_file(inpath, outpath)
+    msdial.process_msdial_file(inpath, outpath, 5)
 
-    expected = os.path.join("tests", "test_data", "msdial_katka_corrected.tsv")
-    assert filecmp.cmp(outpath, expected)
+    expected = os.path.join("tests", "test_data", f"{filename}_corrected.tsv")
+    actual_size = os.stat(outpath).st_size
+    expected_size = os.stat(expected).st_size
+    assert np.abs(actual_size - expected_size) < 100

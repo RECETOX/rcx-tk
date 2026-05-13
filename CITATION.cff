@@ -3,7 +3,7 @@
 cff-version: 1.1.0
 message: "If you use this software, please cite it using these metadata."
 title: "rcx_tk"
-version: 0.2.2
+version: 0.3.0
 date-released: 2026-04-28
 authors:
   - family-names: Ahmad

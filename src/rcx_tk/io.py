@@ -41,6 +41,7 @@ def save_dataframe_as_tsv(
     Raises:
         ValueError: Error if provided <fileName> is of a different format than TSV.
     """
-    if os.path.splitext(file_path)[1] != ".tsv":
+    ext = os.path.splitext(file_path)[1]
+    if ext not in ['.tsv', '.txt', '.tabular']:
         raise ValueError("Unsupported file format. Please point to a TSV file.")
     df.to_csv(file_path, sep="\t", index=index, header=header, mode=mode)
