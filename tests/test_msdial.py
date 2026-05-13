@@ -93,7 +93,7 @@ def test_integration(filename, tmpdir):
     """Test on real MSDial outputs."""
     inpath = os.path.join("tests", "test_data", f'{filename}.tsv')
     outpath = tmpdir / "result.tsv"
-    msdial.process_msdial_file(inpath, outpath)
+    msdial.process_msdial_file(inpath, outpath, 5)
 
     expected = os.path.join("tests", "test_data", f"{filename}_corrected.tsv")
     assert filecmp.cmp(outpath, expected)

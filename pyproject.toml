@@ -123,6 +123,7 @@ no-lines-before = ["future","standard-library","third-party","first-party","loca
 
 [tool.poetry.scripts]
 rcx_tk = "rcx_tk.__main__:main"
+rcx-tk = "rcx_tk.__main__:main"
 
 [tool.poetry_bumpversion.file."src/rcx_tk/__init__.py"]
 search = '__version__ = "{current_version}"'

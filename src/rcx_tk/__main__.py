@@ -4,29 +4,34 @@ from rcx_tk.msdial import process_msdial_file
 from rcx_tk.sequence import process_sequence_file
 
 
-@click.command()
-@click.option(
-    "--method",
-    type=click.Choice(["sequence", "alkanes", "msdial"]),
-    required=True,
-    help="A file type to be processed, either sequence or alkanes file.",
-)
+@click.group()
+def main():
+    """rcx_tk command-line interface."""
+
+
+@main.command("sequence")
 @click.argument("file_path")
 @click.argument("out_path")
-def main(method, file_path, out_path):
-    """Process sequence or alkane file.
+def sequence(file_path: str, out_path: str) -> None:
+    """Process a sequence metadata file."""
+    process_sequence_file(file_path, out_path)
 
-    Args:
-        method (string): Whether a sequence or alkane file should be processed.
-        file_path (path): A path to the input data.
-        out_path (path): A path where the processed data will be exported to.
-    """
-    if method == "sequence":
-        process_sequence_file(file_path, out_path)
-    elif method == "alkanes":
-        process_alkane_file(file_path, out_path)
-    elif method == "msdial":
-        process_msdial_file(file_path, out_path)
+
+@main.command("alkanes")
+@click.argument("file_path")
+@click.argument("out_path")
+def alkanes(file_path: str, out_path: str) -> None:
+    """Process an alkane file."""
+    process_alkane_file(file_path, out_path)
+
+
+@main.command("msdial")
+@click.argument("file_path")
+@click.argument("out_path")
+@click.argument("mz_tol_ppm", required=False, default=5, type=int)
+def msdial(file_path: str, out_path: str, mz_tol_ppm: int) -> None:
+    """Process an MSDIAL output file."""
+    process_msdial_file(file_path, out_path, mz_tol_ppm)
 
 
 if __name__ == "__main__":
