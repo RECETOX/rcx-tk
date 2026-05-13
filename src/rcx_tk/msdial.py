@@ -13,6 +13,7 @@ def process_msdial_file(file_path: str, out_path: str, mz_tol_ppm: int) -> None:
     Args:
         file_path (str): Input file path.
         out_path (str): Output file path.
+        mz_tol_ppm (int): m/z tolerance in ppm to use for splitting clustered alignments.
     """
     df = read_file(file_path, header=4, index_col=0)
     n_samples = get_n_samples(file_path)
@@ -24,26 +25,39 @@ def process_msdial_file(file_path: str, out_path: str, mz_tol_ppm: int) -> None:
 
     save_dataframe_as_tsv(result, out_path, index=True, mode="a")
 
+
 def get_n_samples(file_path: str) -> int:
+    """Obtain number of samples from msdial file.
+
+    Args:
+        file_path (str): Path to msdial file.
+
+    Returns:
+        int: Number of samples contained in the file.
+    """
     with open(file_path) as file:
-        first = file.readline().strip('\t').split('\t')
-    
-    n_samples = len(list(filter(lambda x: x != 'NA', first))[1:-1])
+        first = file.readline().strip("\t").split("\t")
+
+    n_samples = len(list(filter(lambda x: x != "NA", first))[1:-1])
     return n_samples
 
 
-def process_msdial(df: pd.DataFrame, n_samples: int, mz_tol_ppm: int, metadata_cols: int = 27, index_col: str = "Alignment ID") -> pd.DataFrame:
+def process_msdial(
+    df: pd.DataFrame, n_samples: int, mz_tol_ppm: int, metadata_cols: int = 27, index_col: str = "Alignment ID"
+) -> pd.DataFrame:
     """Function to process a DataFrame of MSDial results to group duplicate alignments.
 
     Args:
         df (pd.DataFrame): Dataframe with MSDial results.
+        n_samples (int): Number of samples - required to determine number of intensity cols in df.
+        mz_tol_ppm (int): m/z tolerance in ppm to use for splitting clustered alignments.
         metadata_cols (int, optional): Number of columns containing data prior to feature abundances. Defaults to 28.
         index_col (str, optional): Column to denote the index. Defaults to "Alignment ID".
 
     Returns:
         pd.DataFrame: DataFrame with clustered alignment ids.
     """
-    data_matrix = df.loc[:, df.columns[metadata_cols:n_samples+metadata_cols]]
+    data_matrix = df.loc[:, df.columns[metadata_cols : n_samples + metadata_cols]]
 
     all_duplicates = find_all_duplicates(data_matrix)
     all_duplicates_idx = union(all_duplicates)
@@ -69,16 +83,28 @@ def process_msdial(df: pd.DataFrame, n_samples: int, mz_tol_ppm: int, metadata_c
     everything = pd.concat([df, summary_df])
     return everything
 
-def refine(clusters : list[pd.Index], metadata: pd.DataFrame, mz_tol_ppm: int) -> list[pd.Index]:
+
+def refine(clusters: list[pd.Index], metadata: pd.DataFrame, mz_tol_ppm: int) -> list[pd.Index]:
+    """Refine clusters based on mz tolerance, splitting them if the quant mass is different.
+
+    Args:
+        clusters (list[pd.Index]): List of clusters to refine.
+        metadata (pd.DataFrame): Metadata section of the msdial file to use for refining clusters.
+        mz_tol_ppm (int): m/z tolerance in ppm to use to split clusters.
+
+    Returns:
+        list[pd.Index]: Refined list of clusters.
+    """
     refined_clusters: list[pd.Index] = []
     for cluster in clusters:
-        cluster_metadata = metadata.loc[cluster].sort_values(by='Quant mass')
-        mz_tols = mz_tol_ppm * 1e-06 * cluster_metadata['Quant mass']
-        cluster_metadata['subcluster'] = np.cumsum(cluster_metadata['Quant mass'].diff().fillna(0).abs() > mz_tols)
-        subclusters = list(cluster_metadata.groupby(by='subcluster').groups.values())
+        cluster_metadata = metadata.loc[cluster].sort_values(by="Quant mass")
+        mz_tols = mz_tol_ppm * 1e-06 * cluster_metadata["Quant mass"]
+        cluster_metadata["subcluster"] = np.cumsum(cluster_metadata["Quant mass"].diff().fillna(0).abs() > mz_tols)
+        subclusters = list(cluster_metadata.groupby(by="subcluster").groups.values())
         refined_clusters.extend(subclusters)
 
     return refined_clusters
+
 
 def aggregations(
     mean_columns: list[str], concat_columns: list[str], abundance_columns: list[str]
@@ -118,13 +144,9 @@ def find_clusters(all_duplicates: list[pd.Index]) -> list[pd.Index]:
     clusters: list[pd.Index] = []
     while all_duplicates:
         current = all_duplicates.pop()
-        
-        matches = [
-            cluster_idx
-            for cluster_idx, cluster in enumerate(clusters)
-            if current.isin(cluster).any()
-        ]
-        
+
+        matches = [cluster_idx for cluster_idx, cluster in enumerate(clusters) if current.isin(cluster).any()]
+
         if len(matches) == 0:
             clusters.append(current)
         elif len(matches) == 1:
