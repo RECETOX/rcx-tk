@@ -122,8 +122,12 @@ no-lines-before = ["future","standard-library","third-party","first-party","loca
 rcx_tk = "rcx_tk.__main__:main"
 rcx-tk = "rcx_tk.__main__:main"
 
+
+[tool.bumpversion]
+current_version = "0.2.2"
+
 [[tool.bumpversion.files]]
-filename = "src/aoptk/__init__.py"
+filename = "src/rcx_tk/__init__.py"
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
