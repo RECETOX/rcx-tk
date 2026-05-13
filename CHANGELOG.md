@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ## [0.3.0] - 2026-04-30
 ### Changed
-- changed behaviour in clustering for msdial that clusters are now refined and split based on mz tolerance
-- updated dependencies
-- updated cli to have multiple commands.
+- changed behaviour in clustering for msdial that clusters are now refined and split based on mz tolerance [#48](https://github.com/RECETOX/rcx-tk/pull/48)
+- updated dependencies [#48](https://github.com/RECETOX/rcx-tk/pull/48)
+- updated cli to have multiple commands [#48](https://github.com/RECETOX/rcx-tk/pull/48)
 
 ## [0.2.2] - 2026-04-30
 ### Changed
